@@ -28,6 +28,7 @@
   --on-accent:#FFFFFF; --screen:#070A22; --eye:#6BEAF5; color-scheme:dark;
 }
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
 .wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -56,6 +57,7 @@ nav.top a:hover{background:var(--sky);color:var(--ink)}
 .hero h1 span{display:block;color:var(--accent)}
 .hero .inst{margin-top:14px;font-family:var(--f-display);color:var(--muted);font-size:.95rem}
 .hero .inst b{color:var(--hl);font-weight:700}
+.ila-logo{display:block;width:min(390px,100%);height:auto;margin-top:18px}
 .thesis{margin-top:26px;background:linear-gradient(135deg,var(--accent-2),var(--accent));color:var(--on-accent);padding:22px 24px;border-radius:var(--r);font-size:1.12rem;max-width:58ch;box-shadow:0 12px 30px -16px var(--accent)}
 .thesis u{text-decoration-thickness:2px;text-underline-offset:3px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
@@ -76,6 +78,8 @@ nav.top a:hover{background:var(--sky);color:var(--ink)}
 /* sections */
 section.block{padding-block:64px;scroll-margin-top:60px}
 .sec-head{display:grid;gap:10px;margin-bottom:28px}
+.scroll-reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1);transition-delay:var(--reveal-delay,0ms)}
+.scroll-reveal.is-visible{opacity:1;transform:translateY(0)}
 
 /* areas */
 .areas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
@@ -115,6 +119,27 @@ section.block{padding-block:64px;scroll-margin-top:60px}
 .path-card h3{margin-top:8px}
 .path-card p{margin-top:7px;color:var(--muted);font-size:.94rem}
 .path-note{margin-top:16px;padding:16px 20px;border-left:4px solid var(--hl);border-radius:0 12px 12px 0;background:var(--hl-soft);color:var(--ink)}
+.study-route{margin-top:22px;padding:24px 26px;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 24px color-mix(in srgb,var(--ink) 5%,transparent)}
+.study-track{display:grid;grid-template-columns:auto minmax(40px,1fr) auto;align-items:center;gap:14px;margin-bottom:20px}
+.study-stop{display:flex;align-items:center;gap:9px;font-family:var(--f-display);font-weight:700;color:var(--ink)}
+.study-stop i{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:var(--accent);color:var(--on-accent);font-family:var(--f-mono);font-size:.75rem;font-style:normal}
+.study-track-line{height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--hl));position:relative}
+.study-track-line::after{content:"";position:absolute;right:-1px;top:50%;width:8px;height:8px;border-top:2px solid var(--hl);border-right:2px solid var(--hl);transform:translateY(-50%) rotate(45deg)}
+.study-programs{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:22px}
+.study-level{min-width:0}
+.study-level+.study-level{border-left:1px solid var(--line);padding-left:22px}
+.study-level>span{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;color:var(--accent);text-transform:uppercase}
+.study-level h3{margin-top:7px}
+.study-level p{margin-top:7px;color:var(--muted);font-size:.9rem}
+.study-subjects{display:grid;gap:9px;margin-top:14px}
+.study-subject{padding:12px 14px;border-radius:10px;background:var(--sky);color:var(--ink);transition:transform .18s,box-shadow .18s}
+.study-subject:hover,.study-courses li:hover{transform:translateY(-2px);box-shadow:0 5px 14px color-mix(in srgb,var(--ink) 10%,transparent)}
+.study-subject b{display:block;font-family:var(--f-display);font-size:.87rem}
+.study-subject span{display:block;margin-top:3px;color:var(--muted);font-size:.8rem}
+.study-courses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0 0;padding:0;list-style:none;counter-reset:course}
+.study-courses li{counter-increment:course;position:relative;min-height:56px;padding:10px 10px 10px 38px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:.79rem;line-height:1.35;color:var(--ink);transition:transform .18s,box-shadow .18s}
+.study-courses li::before{content:counter(course,decimal-leading-zero);position:absolute;left:10px;top:11px;font-family:var(--f-mono);font-size:.68rem;color:var(--accent)}
+.study-courses li:last-child{grid-column:1/-1}
 
 /* lab benches */
 .bench{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
@@ -244,6 +269,8 @@ footer b{color:var(--ink);font-family:var(--f-display)}
   .equipment-card.workstations,.equipment-card.capture,.equipment-card.teaching{grid-column:span 1}
   .software-list{grid-template-columns:repeat(3,minmax(0,1fr))}
   .path-grid{grid-template-columns:1fr}
+  .study-programs{grid-template-columns:1fr;gap:18px}
+  .study-level+.study-level{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}
   .bench-body{grid-template-columns:1fr}
   .pane+.pane{border-left:0;border-top:1px solid var(--line)}
   .chat-grid{grid-template-columns:1fr}
@@ -253,10 +280,11 @@ footer b{color:var(--ink);font-family:var(--f-display)}
   .equipment-grid{grid-template-columns:1fr}
   .equipment-card.software,.equipment-card.workstations,.equipment-card.capture,.equipment-card.teaching{grid-column:1}
   .software-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .study-courses{grid-template-columns:1fr}
   .ficha dl{grid-template-columns:1fr}.ficha dd{border-top:0;padding-top:0}
   .bar{grid-template-columns:6em minmax(0,1fr) 2em}
 }
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 
 <nav class="top" aria-label="Secciones">
@@ -279,7 +307,7 @@ footer b{color:var(--ink);font-family:var(--f-display)}
     <div>
       <p class="eyebrow">IV Jornadas · Las Ciencias del Lenguaje al alcance de todos</p>
       <h1 style="margin-top:14px">Laboratorio de Lingüística <span>Computacional y Digital</span></h1>
-      <p class="inst"><b>UCA</b> · Instituto de Investigación en Lingüística Aplicada (ILA)</p>
+      <img class="ila-logo" src="ila-transparent.png" alt="Universidad de Cádiz · Instituto de Investigación en Lingüística Aplicada">
       <p class="thesis">Investigación, enseñanza y desarrollo en la intersección entre lingüística, informática y tecnologías de la comunicación actuales. Núcleo de innovación que <u>aplica métodos computacionales al estudio</u> y tratamiento del lenguaje humano, respondiendo a los desafíos de la era digital.</p>
       <div class="tags">
         <a class="tag" href="#corpus">Terminología computacional</a>
@@ -514,6 +542,31 @@ footer b{color:var(--ink);font-family:var(--f-display)}
       <article class="path-card"><span class="path-num">02 · TECNOLOGÍA</span><h3>Aprender a trabajar con datos</h3><p>Programación, estadística y herramientas para procesar corpus permiten convertir esas preguntas en análisis y aplicaciones.</p></article>
       <article class="path-card"><span class="path-num">03 · PRÁCTICA</span><h3>Probar, evaluar y colaborar</h3><p>Los proyectos se construyen en equipo: se prueban con datos reales y se revisa si los resultados son útiles y fiables.</p></article>
     </div>
+    <div class="study-route" aria-label="Ruta formativa en la Universidad de Cádiz: Grado y Máster">
+      <div class="study-track" aria-hidden="true"><div class="study-stop"><i>01</i>Grado</div><div class="study-track-line"></div><div class="study-stop"><i>02</i>Máster</div></div>
+      <div class="study-programs">
+        <article class="study-level">
+          <span>Asignaturas relacionadas</span>
+          <h3>Base en tecnologías del lenguaje</h3>
+          <p>Conecta el estudio lingüístico con métodos computacionales y el desarrollo de aplicaciones.</p>
+          <div class="study-subjects">
+            <div class="study-subject"><b>Lingüística computacional</b><span>Métodos computacionales para estudiar la lengua.</span></div>
+            <div class="study-subject"><b>Ingeniería del lenguaje</b><span>Diseño de herramientas y aplicaciones lingüísticas.</span></div>
+          </div>
+        </article>
+        <article class="study-level">
+          <span>Máster Universitario en Ciencias del Lenguaje y sus Aplicaciones</span>
+          <h3>Especialidad en Industrias de la Lengua y Tecnologías del Lenguaje</h3>
+          <ul class="study-courses" aria-label="Asignaturas de la especialidad">
+            <li>Introducción a la programación para lingüistas</li>
+            <li>Lingüística de corpus y herramientas digitales</li>
+            <li>Terminología y lenguajes especializados: recursos para la gestión terminológica</li>
+            <li>Nuevas tecnologías del lenguaje</li>
+            <li>Técnicas lexicográficas digitales</li>
+          </ul>
+        </article>
+      </div>
+    </div>
     <p class="path-note"><b>Puedes llegar desde distintos estudios.</b> Desde lingüística, filología o traducción puedes sumar programación y análisis de datos; desde informática, puedes especializarte en lengua y comunicación.</p>
   </div>
 </section>
@@ -533,6 +586,18 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* section transitions */
+if (!reduce && 'IntersectionObserver' in window){
+  const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (entry.isIntersecting){ entry.target.classList.add('is-visible'); revealObserver.unobserve(entry.target); }
+  }), {threshold:.12, rootMargin:'0px 0px -5% 0px'});
+  $$('main > section.block').forEach(section => $$('.wrap > *', section).forEach((item, i) => {
+    item.classList.add('scroll-reveal');
+    item.style.setProperty('--reveal-delay', `${Math.min(i, 3) * 90}ms`);
+    revealObserver.observe(item);
+  }));
+}
 
 /* ---------- circuit canvas ---------- */
 const cv = $('#circuit'), cx = cv.getContext('2d');
