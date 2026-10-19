@@ -8,8 +8,9 @@
 :root{
   --bg:#F3F5FB; --surface:#FFFFFF; --ink:#1B2363; --muted:#56608F;
   --accent:#3550E0; --accent-2:#5C7BFF; --sky:#DFE6FF; --line:#D6DCEF;
-  --hl:#D9741C; --hl-soft:#FBE7D3; --ok:#1F8A5B; --ok-soft:#D9F2E6; --bad:#C2393B; --bad-soft:#F9DEDE;
-  --on-accent:#FFFFFF; --screen:#141A4A; --eye:#5FE3F0;
+  --hl:#D85D99; --hl-soft:#FCE6F0; --ok:#28A982; --ok-soft:#DDF4EA; --bad:#C2393B; --bad-soft:#F9DEDE;
+  --violet:#8B5CF6; --violet-soft:#EEE8FF; --mint:#28A982; --mint-soft:#DDF4EA; --rose:#D85D99; --rose-soft:#FCE6F0;
+  --on-accent:#FFFFFF; --screen:#141A4A; --eye:#28A982;
   --f-display:"Lexend", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
   --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -18,14 +19,16 @@
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#0C1030; --surface:#151B45; --ink:#E7EBFF; --muted:#9CA5D8;
   --accent:#8193FF; --accent-2:#4D6CF0; --sky:#212A68; --line:#2B3473;
-  --hl:#F4A458; --hl-soft:#4A3221; --ok:#5CD39C; --ok-soft:#173D30; --bad:#F07A7C; --bad-soft:#4A2026;
-  --on-accent:#FFFFFF; --screen:#070A22; --eye:#6BEAF5; color-scheme:dark;
+  --hl:#F19BC2; --hl-soft:#462638; --ok:#65D8B2; --ok-soft:#183E36; --bad:#F07A7C; --bad-soft:#4A2026;
+  --violet:#B69AFF; --violet-soft:#30244B; --mint:#65D8B2; --mint-soft:#183E36; --rose:#F19BC2; --rose-soft:#462638;
+  --on-accent:#FFFFFF; --screen:#070A22; --eye:#65D8B2; color-scheme:dark;
 }}
 :root[data-theme="dark"]{
   --bg:#0C1030; --surface:#151B45; --ink:#E7EBFF; --muted:#9CA5D8;
   --accent:#8193FF; --accent-2:#4D6CF0; --sky:#212A68; --line:#2B3473;
-  --hl:#F4A458; --hl-soft:#4A3221; --ok:#5CD39C; --ok-soft:#173D30; --bad:#F07A7C; --bad-soft:#4A2026;
-  --on-accent:#FFFFFF; --screen:#070A22; --eye:#6BEAF5; color-scheme:dark;
+  --hl:#F19BC2; --hl-soft:#462638; --ok:#65D8B2; --ok-soft:#183E36; --bad:#F07A7C; --bad-soft:#4A2026;
+  --violet:#B69AFF; --violet-soft:#30244B; --mint:#65D8B2; --mint-soft:#183E36; --rose:#F19BC2; --rose-soft:#462638;
+  --on-accent:#FFFFFF; --screen:#070A22; --eye:#65D8B2; color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -64,7 +67,7 @@ nav.top a:hover{background:var(--sky);color:var(--ink)}
 .tag{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border:1.5px solid var(--accent);border-radius:999px;color:var(--accent);font-weight:600;text-decoration:none;background:var(--surface)}
 .tag:hover{background:var(--accent);color:var(--on-accent)}
 .bot-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
-.bot-wrap .hint{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);text-align:center}
+.bot-wrap .hint{display:grid;place-items:center;width:min(240px,100%);min-height:3.8em;margin:0;font-family:var(--f-mono);font-size:.78rem;line-height:1.35;color:var(--muted);text-align:center}
 .robot{width:min(240px,100%);height:auto;cursor:pointer;overflow:visible}
 .robot .bub{transform-origin:center;transition:transform .3s}
 .robot:hover .bub1{transform:translateY(-4px)}
@@ -84,28 +87,43 @@ section.block{padding-block:64px;scroll-margin-top:60px}
 /* areas */
 .areas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .area{display:grid;grid-template-columns:52px minmax(0,1fr);gap:16px;padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
+.area:nth-child(4n+1){--area-accent:var(--violet)}.area:nth-child(4n+2){--area-accent:var(--mint)}.area:nth-child(4n+3){--area-accent:var(--rose)}.area:nth-child(4n){--area-accent:var(--violet)}
 .area:hover{transform:translateY(-2px);border-color:var(--accent)}
-.area svg{width:52px;height:52px;color:var(--accent)}
+.area svg{width:52px;height:52px;padding:10px;color:var(--area-accent,var(--accent));background:color-mix(in srgb,var(--area-accent,var(--accent)) 12%,var(--surface));border-radius:13px}
 .area p{color:var(--muted);margin-top:6px;font-size:.98rem}
-.area .go{display:inline-block;margin-top:10px;font-family:var(--f-display);font-size:.85rem;color:var(--accent);font-weight:600}
+.area .go{display:inline-block;margin-top:10px;font-family:var(--f-display);font-size:.85rem;color:var(--area-accent,var(--accent));font-weight:600}
 .equipment-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
 .equipment-card{position:relative;overflow:hidden;padding:22px;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 24px color-mix(in srgb,var(--ink) 6%,transparent)}
 .equipment-card::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--card-accent,var(--accent))}
 .equipment-card h3{font-size:1.05rem}
 .equipment-card .small{display:block;margin-top:3px;color:var(--muted);font-size:.78rem}
-.equipment-card.software{grid-column:1/-1;--card-accent:var(--accent)}
-.equipment-card.workstations{grid-column:span 4;--card-accent:var(--ok)}
-.equipment-card.capture{grid-column:span 4;--card-accent:var(--hl)}
-.equipment-card.teaching{grid-column:span 4;--card-accent:var(--accent-2)}
+.equipment-card.software{grid-column:1/-1;--card-accent:var(--violet)}
+.equipment-card.stack{grid-column:1/-1;--card-accent:var(--accent)}
+.equipment-card.workstations{grid-column:span 4;--card-accent:var(--mint)}
+.equipment-card.capture{grid-column:span 4;--card-accent:var(--rose)}
+.equipment-card.teaching{grid-column:span 4;--card-accent:var(--violet)}
 .equip-heading{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+details.equipment-card{padding:0}
+details.equipment-card>summary{display:flex;align-items:center;gap:12px;min-height:92px;box-sizing:border-box;padding:18px 22px;cursor:pointer;list-style:none;margin:0}
+details.equipment-card>summary::-webkit-details-marker{display:none}
+details.equipment-card>summary::after{content:"+";margin-left:auto;font-size:1.4rem;line-height:1;color:var(--card-accent,var(--accent));transition:transform .2s}
+details.equipment-card[open]>summary::after{content:"−"}
+details.equipment-card .equip-content{padding:0 22px 22px}
+details.equipment-card .equip-heading{margin:0}
 .equip-icon{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:12px;background:color-mix(in srgb,var(--card-accent,var(--accent)) 12%,var(--surface));color:var(--card-accent,var(--accent))}
 .equip-icon svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.software-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.software-list{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
 .software-item{min-height:108px;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);text-decoration:none;color:var(--ink);transition:transform .18s,border-color .18s}
 .software-item:hover{transform:translateY(-3px);border-color:var(--accent)}
 .software-item:focus-visible{outline:3px solid var(--hl);outline-offset:3px}
 .software-item b{display:block;font-family:var(--f-display);font-size:.95rem;color:var(--accent)}
 .software-item span{display:block;margin-top:6px;font-size:.82rem;line-height:1.35;color:var(--muted)}
+.stack-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.stack-tool{display:block;padding:15px 16px;border:1px solid var(--line);border-left:3px solid var(--stack-color,var(--accent));border-radius:11px;background:var(--bg);color:var(--ink);text-decoration:none;transition:transform .18s,border-color .18s}
+.stack-tool:nth-child(3n+1){--stack-color:var(--violet)}.stack-tool:nth-child(3n+2){--stack-color:var(--mint)}.stack-tool:nth-child(3n){--stack-color:var(--rose)}
+.stack-tool:hover{transform:translateY(-2px);border-color:var(--stack-color)}
+.stack-tool b{display:block;font-family:var(--f-display);color:var(--stack-color)}
+.stack-tool span{display:block;margin-top:4px;color:var(--muted);font-size:.84rem}
 .equipment-items{list-style:none;padding:0;margin:0;display:grid;gap:12px}
 .equipment-items li{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;line-height:1.4;color:var(--muted)}
 .equipment-items b{color:var(--ink)}
@@ -114,8 +132,9 @@ section.block{padding-block:64px;scroll-margin-top:60px}
 .equip-stat b{font-family:var(--f-display);font-size:3.4rem;line-height:1;color:var(--card-accent,var(--accent))}
 .equip-stat span{color:var(--muted);font-size:.9rem}
 .path-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.path-card{position:relative;padding:22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
-.path-card .path-num{font-family:var(--f-mono);font-size:.75rem;color:var(--accent);letter-spacing:.08em}
+.path-card{position:relative;padding:22px;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--path-accent,var(--accent));border-radius:var(--r)}
+.path-card:nth-child(3n+1){--path-accent:var(--violet)}.path-card:nth-child(3n+2){--path-accent:var(--rose)}.path-card:nth-child(3n){--path-accent:var(--mint)}
+.path-card .path-num{font-family:var(--f-mono);font-size:.75rem;color:var(--path-accent,var(--accent));letter-spacing:.08em}
 .path-card h3{margin-top:8px}
 .path-card p{margin-top:7px;color:var(--muted);font-size:.94rem}
 .path-note{margin-top:16px;padding:16px 20px;border-left:4px solid var(--hl);border-radius:0 12px 12px 0;background:var(--hl-soft);color:var(--ink)}
@@ -133,12 +152,16 @@ section.block{padding-block:64px;scroll-margin-top:60px}
 .study-level p{margin-top:7px;color:var(--muted);font-size:.9rem}
 .study-subjects{display:grid;gap:9px;margin-top:14px}
 .study-subject{padding:12px 14px;border-radius:10px;background:var(--sky);color:var(--ink);transition:transform .18s,box-shadow .18s}
+.study-subject:nth-child(2){background:var(--mint-soft)}
 .study-subject:hover,.study-courses li:hover{transform:translateY(-2px);box-shadow:0 5px 14px color-mix(in srgb,var(--ink) 10%,transparent)}
 .study-subject b{display:block;font-family:var(--f-display);font-size:.87rem}
 .study-subject span{display:block;margin-top:3px;color:var(--muted);font-size:.8rem}
 .study-courses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0 0;padding:0;list-style:none;counter-reset:course}
 .study-courses li{counter-increment:course;position:relative;min-height:56px;padding:10px 10px 10px 38px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:.79rem;line-height:1.35;color:var(--ink);transition:transform .18s,box-shadow .18s}
 .study-courses li::before{content:counter(course,decimal-leading-zero);position:absolute;left:10px;top:11px;font-family:var(--f-mono);font-size:.68rem;color:var(--accent)}
+.study-courses li:nth-child(3n+1){border-left:3px solid var(--violet);background:var(--violet-soft)}
+.study-courses li:nth-child(3n+2){border-left:3px solid var(--rose);background:var(--rose-soft)}
+.study-courses li:nth-child(3n){border-left:3px solid var(--mint);background:var(--mint-soft)}
 .study-courses li:last-child{grid-column:1/-1}
 
 /* lab benches */
@@ -167,12 +190,11 @@ textarea:focus,input[type="text"]:focus{outline:none;border-color:var(--accent)}
 .frequency-preview header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .frequency-preview header b{font-family:var(--f-display);font-size:.9rem}
 .frequency-preview header span{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
-.mini-bars{display:grid;gap:7px}
-.mini-bar{display:grid;grid-template-columns:5.5em minmax(0,1fr) 1.5em;gap:8px;align-items:center;font-family:var(--f-mono);font-size:.75rem}
-.mini-bar .word{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;color:var(--muted)}
-.mini-bar .track{height:8px;background:var(--bg);border-radius:99px;overflow:hidden}
-.mini-bar .fill{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .25s}
-.mini-bar .count{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+.frequency-preview svg{display:block;width:100%;height:auto;overflow:visible}
+.frequency-preview .gridline{stroke:var(--line);stroke-width:1}
+.frequency-preview .axis-label,.frequency-preview .word-label{fill:var(--muted);font-family:var(--f-mono);font-size:11px}
+.frequency-preview .bar-value{fill:var(--ink);font-family:var(--f-mono);font-size:11px}
+.frequency-preview .chart-bar{fill:var(--accent);rx:5;transition:width .25s ease}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
 .bars{display:grid;gap:6px}
 .bar{display:grid;grid-template-columns:7.5em minmax(0,1fr) 2.2em;gap:10px;align-items:center;font-family:var(--f-mono);font-size:.85rem}
@@ -200,12 +222,13 @@ mark.t{background:var(--hl-soft);color:var(--ink);border-bottom:2px solid var(--
 .raw{font-family:var(--f-mono);font-size:.85rem;background:var(--bg);border:1.5px dashed var(--line);border-radius:10px;padding:14px;white-space:pre-wrap;word-break:break-word;color:var(--muted)}
 .steps{list-style:none;margin:0;padding:0;display:grid;gap:0}
 .step{display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;position:relative;padding-bottom:22px}
+.step:nth-child(4n+1){--step-color:var(--violet)}.step:nth-child(4n+2){--step-color:var(--mint)}.step:nth-child(4n+3){--step-color:var(--rose)}.step:nth-child(4n){--step-color:var(--violet)}
 .step::before{content:"";position:absolute;left:21px;top:44px;bottom:0;width:2px;background:var(--line)}
 .step:last-child::before{display:none}
 .step .num{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:700;border:2px solid var(--line);background:var(--surface);color:var(--muted);transition:all .3s}
-.step.active .num{border-color:var(--accent);color:var(--accent);animation:pulse 1s infinite}
-.step.done .num{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-.step.done::before{background:var(--accent)}
+.step.active .num{border-color:var(--step-color,var(--accent));color:var(--step-color,var(--accent));animation:pulse 1s infinite}
+.step.done .num{background:var(--step-color,var(--accent));border-color:var(--step-color,var(--accent));color:var(--on-accent)}
+.step.done::before{background:var(--step-color,var(--accent))}
 @keyframes pulse{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--accent) 20%,transparent)}}
 .step h3{margin-top:9px}
 .step .desc{color:var(--muted);font-size:.93rem;margin-top:2px}
@@ -221,7 +244,9 @@ mark.t{background:var(--hl-soft);color:var(--ink);border-bottom:2px solid var(--
 .tok.pos{display:grid;text-align:center;gap:1px;padding:5px 8px}
 .tok.pos b{font-size:.68rem;letter-spacing:.06em}
 .tok.pos i{font-style:normal;font-size:.7rem;color:var(--muted)}
-.p-N b{color:var(--accent)}.p-ADJ b{color:var(--hl)}.p-V b{color:var(--ok)}.p-DET b,.p-PREP b,.p-PRON b,.p-PUNT b,.p-PREPDET b{color:var(--muted)}
+.p-N{background:var(--violet-soft);border-color:color-mix(in srgb,var(--violet) 35%,var(--line))}.p-ADJ{background:var(--rose-soft);border-color:color-mix(in srgb,var(--rose) 35%,var(--line))}.p-V{background:var(--mint-soft);border-color:color-mix(in srgb,var(--mint) 35%,var(--line))}
+.p-N b{color:var(--violet)}.p-ADJ b{color:var(--rose)}.p-V b{color:var(--mint)}.p-DET b,.p-PREP b,.p-PRON b,.p-PUNT b,.p-PREPDET b{color:var(--muted)}
+.gram-scheme{display:inline-block;padding:3px 8px;border-left:3px solid var(--violet);border-radius:5px;background:var(--violet-soft);color:var(--violet);font-family:var(--f-mono);font-size:.76rem}
 .ficha{border:2px solid var(--accent);border-radius:var(--r);overflow:hidden;background:var(--surface)}
 .ficha header{background:linear-gradient(135deg,var(--accent-2),var(--accent));color:var(--on-accent);padding:14px 16px}
 .ficha header small{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
@@ -258,6 +283,8 @@ mark.t{background:var(--hl-soft);color:var(--ink);border-bottom:2px solid var(--
 footer{border-top:1px solid var(--line);padding-block:32px;color:var(--muted);font-size:.9rem}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between}
 footer b{color:var(--ink);font-family:var(--f-display)}
+footer .disclaimer{width:100%;padding-top:14px;border-top:1px solid var(--line)}
+footer .disclaimer a{color:var(--accent);font-weight:600}
 
 @media (max-width:860px){
   .hero .wrap{grid-template-columns:1fr;padding-block:40px}
@@ -265,9 +292,10 @@ footer b{color:var(--ink);font-family:var(--f-display)}
   .areas{grid-template-columns:1fr}
   .corpus-intro{grid-template-columns:1fr;gap:0}
   .equipment-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .equipment-card.software{grid-column:1/-1}
+  .equipment-card.software,.equipment-card.stack{grid-column:1/-1}
   .equipment-card.workstations,.equipment-card.capture,.equipment-card.teaching{grid-column:span 1}
   .software-list{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stack-list{grid-template-columns:repeat(2,minmax(0,1fr))}
   .path-grid{grid-template-columns:1fr}
   .study-programs{grid-template-columns:1fr;gap:18px}
   .study-level+.study-level{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}
@@ -278,8 +306,9 @@ footer b{color:var(--ink);font-family:var(--f-display)}
 }
 @media (max-width:480px){
   .equipment-grid{grid-template-columns:1fr}
-  .equipment-card.software,.equipment-card.workstations,.equipment-card.capture,.equipment-card.teaching{grid-column:1}
+  .equipment-card.software,.equipment-card.stack,.equipment-card.workstations,.equipment-card.capture,.equipment-card.teaching{grid-column:1}
   .software-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stack-list{grid-template-columns:1fr}
   .study-courses{grid-template-columns:1fr}
   .ficha dl{grid-template-columns:1fr}.ficha dd{border-top:0;padding-top:0}
   .bar{grid-template-columns:6em minmax(0,1fr) 2em}
@@ -289,7 +318,7 @@ footer b{color:var(--ink);font-family:var(--f-display)}
 
 <nav class="top" aria-label="Secciones">
   <div class="wrap">
-    <span class="brand">Lab · Lingüística Computacional</span>
+    <span class="brand">Laboratorio de Lingüística Computacional y Digital</span>
     <div class="links">
       <a href="#areas">Qué hacemos</a>
       <a href="#corpus">Corpus</a>
@@ -334,7 +363,7 @@ footer b{color:var(--ink);font-family:var(--f-display)}
         <rect x="62" y="186" width="76" height="40" rx="14" fill="var(--accent)"/>
         <rect x="88" y="196" width="24" height="10" rx="4" fill="var(--eye)" opacity=".8"/>
       </svg>
-      <p class="hint" id="botHint">Tócame</p>
+      <p class="hint" id="botHint">Pulsa para saludarme</p>
     </div>
   </div>
 </header>
@@ -378,7 +407,7 @@ footer b{color:var(--ink);font-family:var(--f-display)}
       </div>
       <aside class="frequency-preview" aria-label="Gráfico de frecuencias del texto actual">
         <header><b>Palabras más frecuentes</b><span>vista rápida</span></header>
-        <div class="mini-bars" id="miniBars" aria-live="polite"></div>
+        <svg id="miniChart" viewBox="0 0 430 170" role="img" aria-label="Gráfico de barras con la frecuencia de las palabras más usadas"></svg>
       </aside>
     </div>
     <div class="bench">
@@ -500,19 +529,32 @@ footer b{color:var(--ink);font-family:var(--f-display)}
       <p class="lead">Herramientas para analizar, documentar y compartir datos lingüísticos.</p>
     </div>
     <div class="equipment-grid">
-      <article class="equipment-card software">
-        <div class="equip-heading">
+      <details class="equipment-card software">
+        <summary>
           <span class="equip-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9h4M7 12h8"/></svg></span>
-          <div><h3>Software de análisis</h3><span class="small">Cinco herramientas especializadas</span></div>
-        </div>
-        <div class="software-list">
+          <div class="equip-heading"><div><h3>Software y herramientas de análisis</h3><span class="small">Programas para corpus, anotación y análisis lingüístico</span></div></div>
+        </summary>
+        <div class="equip-content"><div class="software-list">
           <a class="software-item" href="https://praat.org/praat" target="_blank" rel="noopener noreferrer"><b>Praat ↗</b><span>Fonética y espectrogramas</span></a>
           <a class="software-item" href="https://www.philocomp.net/humanities/signature.htm" target="_blank" rel="noopener noreferrer"><b>Signature ↗</b><span>Medidas y visualización estilométrica</span></a>
           <a class="software-item" href="https://github.com/computationalstylistics/stylo" target="_blank" rel="noopener noreferrer"><b>Stylo ↗</b><span>Estilometría y clasificación en R</span></a>
-          <a class="software-item" href="https://www.corpustool.com/" target="_blank" rel="noopener noreferrer"><b>UAM CorpusTool ↗</b><span>Anotación de corpus textuales</span></a>
           <a class="software-item" href="https://www.compilatio.net/es/" target="_blank" rel="noopener noreferrer"><b>Compilatio ↗</b><span>Análisis de similitud documental</span></a>
-        </div>
-      </article>
+          <a class="software-item" href="https://www.corpustool.com/" target="_blank" rel="noopener noreferrer"><b>UAM CorpusTool ↗</b><span>Anotación de corpus textuales</span></a>
+          <a class="software-item" href="https://github.com/doccano/doccano" target="_blank" rel="noopener noreferrer"><b>Doccano ↗</b><span>Anotación colaborativa de datos de texto</span></a>
+        </div></div>
+      </details>
+      <details class="equipment-card stack">
+        <summary>
+          <span class="equip-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></span><div class="equip-heading"><div><h3>Entorno de trabajo</h3><span class="small">Herramientas para programar y colaborar</span></div></div>
+        </summary>
+        <div class="equip-content"><div class="stack-list">
+          <a class="stack-tool" href="https://www.python.org/" target="_blank" rel="noopener noreferrer"><b>Python ↗</b><span>Uno de los lenguajes que usamos principalmente.</span></a>
+          <a class="stack-tool" href="https://www.r-project.org/" target="_blank" rel="noopener noreferrer"><b>R ↗</b><span>Uno de los lenguajes que usamos principalmente.</span></a>
+          <a class="stack-tool" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><b>Visual Studio Code ↗</b><span>Entorno de edición y desarrollo.</span></a>
+          <a class="stack-tool" href="https://github.com/" target="_blank" rel="noopener noreferrer"><b>GitHub ↗</b><span>Repositorios y colaboración en proyectos.</span></a>
+          <a class="stack-tool" href="https://colab.research.google.com/" target="_blank" rel="noopener noreferrer"><b>Google Colab ↗</b><span>Cuadernos de código en la nube.</span></a>
+        </div></div>
+      </details>
       <article class="equipment-card workstations">
         <div class="equip-heading"><span class="equip-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 8h4M7 11h8"/></svg></span><h3>Aula conectada</h3></div>
         <div class="equip-stat"><b>20</b><span>puestos de trabajo en red</span></div>
@@ -575,8 +617,9 @@ footer b{color:var(--ink);font-family:var(--f-display)}
 
 <footer>
   <div class="wrap">
-    <div><b>Laboratorio de Lingüística Computacional y Digital</b><br>Instituto de Investigación en Lingüística Aplicada (ILA) · Universidad de Cádiz</div>
+    <div><b>Laboratorio de Lingüística Computacional y Digital</b><br>Instituto de Investigación en Lingüística Aplicada (ILA) · Universidad de Cádiz<br><a href="mailto:ila.computacional@uca.es">ila.computacional@uca.es</a></div>
     <div>IV Jornadas de Divulgación Científica<br>20 de octubre de 2026 · Facultad de Filosofía y Letras</div>
+    <p class="disclaimer">Esta página se ha creado con fines divulgativos. Para el resto de información, visita el <a href="https://ila.uca.es/" target="_blank" rel="noopener noreferrer">sitio web oficial del ILA</a>.</p>
   </div>
 </footer>
 
@@ -641,7 +684,13 @@ let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() 
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); if (reduce) drawCircuit(); });
 
 /* hero robot */
-const hellos = ['¡Hola! Soy el robot del lab', 'Proceso lenguaje humano', 'Baja y prueba las demos', 'Me encantan los corpus', 'Tócame otra vez'];
+const hellos = [
+  '¡Hola! Soy la mascota del laboratorio.',
+  'Un corpus reúne textos para estudiar cómo usamos la lengua.',
+  'Los corpus ayudan a estudiar cómo se usa la lengua.',
+  'La tecnología ayuda a encontrar patrones en el lenguaje.',
+  '¡Sigue explorando las demostraciones!'
+];
 let hi = 0; $('#heroBot').addEventListener('click', () => {
   const b = $('#heroBot'); b.classList.remove('wave'); void b.getBoundingClientRect(); b.classList.add('wave');
   $('#botHint').textContent = hellos[hi++ % hellos.length];
@@ -683,8 +732,16 @@ function analyze(){
   const top = [...counts].filter(([w]) => !hide || !STOP.has(w)).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'es')).slice(0, 12);
   const max = top.length ? top[0][1] : 1;
   $('#bars').innerHTML = top.length ? top.map(([w, n]) => `<div class="bar"><span class="w" title="${esc(w)}">${esc(w)}</span><span class="track"><span class="fill" style="width:${(n / max * 100).toFixed(1)}%"></span></span><span class="n">${n}</span></div>`).join('') : '<p class="empty">Escribe algo en el cuadro de la izquierda.</p>';
-  const preview = top.slice(0, 4);
-  $('#miniBars').innerHTML = preview.length ? preview.map(([w, n]) => `<div class="mini-bar"><span class="word" title="${esc(w)}">${esc(w)}</span><span class="track"><span class="fill" style="width:${(n / max * 100).toFixed(1)}%"></span></span><span class="count">${n}</span></div>`).join('') : '<span class="small">Escribe un texto para ver sus frecuencias.</span>';
+  const preview = top.slice(0, 4), chartMax = Math.max(4, Math.ceil(max / 4) * 4), x0 = 112, plotWidth = 270;
+  const grid = Array.from({length:5}, (_, i) => {
+    const x = x0 + plotWidth * i / 4, tick = Math.round(chartMax * i / 4);
+    return `<line class="gridline" x1="${x}" y1="8" x2="${x}" y2="140"/><text class="axis-label" x="${x}" y="158" text-anchor="middle">${tick}</text>`;
+  }).join('');
+  const bars = preview.map(([w, n], i) => {
+    const y = 15 + i * 31, label = w.length > 13 ? w.slice(0, 12) + '…' : w;
+    return `<text class="word-label" x="${x0 - 9}" y="${y + 12}" text-anchor="end">${esc(label)}</text><rect class="chart-bar" x="${x0}" y="${y}" width="${(n / chartMax * plotWidth).toFixed(1)}" height="16"><title>${esc(w)}: ${n}</title></rect><text class="bar-value" x="${x0 + (n / chartMax * plotWidth) + 6}" y="${y + 12}">${n}</text>`;
+  }).join('');
+  $('#miniChart').innerHTML = preview.length ? `<title>Frecuencia de las cuatro palabras más usadas</title>${grid}${bars}` : '<text class="axis-label" x="12" y="80">Escribe un texto para ver sus frecuencias.</text>';
   kwic(text, toks); terms(text, toks);
 }
 function kwic(text, toks){
@@ -769,14 +826,13 @@ const STEPS = [
       const needle = f.text.toLowerCase();
       const escaped = needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const matches = [...cleaned.matchAll(new RegExp(`\\b${escaped}\\b`, 'gi'))];
-      const frequency = matches.length;
       const hit = matches[0];
       const left = hit ? cleaned.slice(Math.max(0, hit.index - 38), hit.index) : '';
       const matched = hit ? cleaned.slice(hit.index, hit.index + needle.length) : f.text;
       const right = hit ? cleaned.slice(hit.index + needle.length, hit.index + needle.length + 38) : '';
-      return `<li><b>${f.p.map(t => PNAME[t]).join(' + ')}</b><span class="small">${frequency} ${frequency === 1 ? 'aparición' : 'apariciones'}</span><p class="note">…${esc(left)}<mark class="t">${esc(matched)}</mark>${esc(right)}…</p></li>`;
+      return `<li><b class="gram-scheme">${f.p.map(t => PNAME[t]).join(' + ')}</b><p class="note">…${esc(left)}<mark class="t">${esc(matched)}</mark>${esc(right)}…</p></li>`;
     }).join('');
-    return `<div class="fade"><p class="small">Candidatos, frecuencia y concordancia de ejemplo para orientar la revisión:</p><ul class="steps" style="margin-top:12px">${evidence}</ul><p class="note">${keep.length} candidatos detectados. Las frecuencias y los contextos ayudan a valorar su relevancia.</p></div>`;
+    return `<div class="fade"><p class="small">Candidatos y concordancias de ejemplo para orientar la revisión:</p><ul class="steps" style="margin-top:12px">${evidence}</ul><p class="note">${keep.length} candidatos detectados. Los contextos ayudan a valorar su relevancia.</p></div>`;
   },
 
 ];
