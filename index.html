@@ -1,0 +1,746 @@
+<title>Laboratorio de Lingüística Computacional y Digital</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: póster del lab convertido en recorrido — portada con circuitos, 4 áreas, y tres "mesas de trabajo" interactivas + quiz */
+:root{
+  --bg:#F3F5FB; --surface:#FFFFFF; --ink:#1B2363; --muted:#56608F;
+  --accent:#3550E0; --accent-2:#5C7BFF; --sky:#DFE6FF; --line:#D6DCEF;
+  --hl:#D9741C; --hl-soft:#FBE7D3; --ok:#1F8A5B; --ok-soft:#D9F2E6; --bad:#C2393B; --bad-soft:#F9DEDE;
+  --on-accent:#FFFFFF; --screen:#141A4A; --eye:#5FE3F0;
+  --f-display:"Lexend", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0C1030; --surface:#151B45; --ink:#E7EBFF; --muted:#9CA5D8;
+  --accent:#8193FF; --accent-2:#4D6CF0; --sky:#212A68; --line:#2B3473;
+  --hl:#F4A458; --hl-soft:#4A3221; --ok:#5CD39C; --ok-soft:#173D30; --bad:#F07A7C; --bad-soft:#4A2026;
+  --on-accent:#FFFFFF; --screen:#070A22; --eye:#6BEAF5; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0C1030; --surface:#151B45; --ink:#E7EBFF; --muted:#9CA5D8;
+  --accent:#8193FF; --accent-2:#4D6CF0; --sky:#212A68; --line:#2B3473;
+  --hl:#F4A458; --hl-soft:#4A3221; --ok:#5CD39C; --ok-soft:#173D30; --bad:#F07A7C; --bad-soft:#4A2026;
+  --on-accent:#FFFFFF; --screen:#070A22; --eye:#6BEAF5; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.6rem,3.2vw,2.2rem);font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.15rem;font-weight:600}
+p{margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--hl);outline-offset:2px;border-radius:6px}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.lead{color:var(--muted);max-width:62ch}
+
+/* nav */
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;gap:16px;padding-block:10px;overflow-x:auto;scrollbar-width:none}
+nav.top .brand{font-family:var(--f-display);font-weight:700;white-space:nowrap;font-size:.95rem}
+nav.top .links{display:flex;gap:4px;margin-left:auto}
+nav.top a{font-family:var(--f-display);font-size:.88rem;text-decoration:none;color:var(--muted);padding:6px 10px;border-radius:999px;white-space:nowrap}
+nav.top a:hover{background:var(--sky);color:var(--ink)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+#circuit{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.35fr .65fr;gap:40px;align-items:center;padding-block:56px 48px}
+.hero h1{font-size:clamp(2rem,5vw,3.6rem);font-weight:700;letter-spacing:-.02em;text-transform:uppercase}
+.hero h1 span{display:block;color:var(--accent)}
+.hero .inst{margin-top:14px;font-family:var(--f-display);color:var(--muted);font-size:.95rem}
+.hero .inst b{color:var(--hl);font-weight:700}
+.thesis{margin-top:26px;background:linear-gradient(135deg,var(--accent-2),var(--accent));color:var(--on-accent);padding:22px 24px;border-radius:var(--r);font-size:1.12rem;max-width:58ch;box-shadow:0 12px 30px -16px var(--accent)}
+.thesis u{text-decoration-thickness:2px;text-underline-offset:3px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.tag{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border:1.5px solid var(--accent);border-radius:999px;color:var(--accent);font-weight:600;text-decoration:none;background:var(--surface)}
+.tag:hover{background:var(--accent);color:var(--on-accent)}
+.bot-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+.bot-wrap .hint{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);text-align:center}
+.robot{width:min(240px,100%);height:auto;cursor:pointer;overflow:visible}
+.robot .bub{transform-origin:center;transition:transform .3s}
+.robot:hover .bub1{transform:translateY(-4px)}
+.robot:hover .bub2{transform:translateY(-6px)}
+.robot .eyes{transform-origin:100px 132px;animation:blink 5s infinite}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.robot.wave .head{animation:tilt .6s ease-in-out 2}
+@keyframes tilt{50%{transform:rotate(-6deg)}}
+.robot .head{transform-origin:100px 150px}
+
+/* sections */
+section.block{padding-block:64px;scroll-margin-top:60px}
+.sec-head{display:grid;gap:10px;margin-bottom:28px}
+
+/* areas */
+.areas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.area{display:grid;grid-template-columns:52px minmax(0,1fr);gap:16px;padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
+.area:hover{transform:translateY(-2px);border-color:var(--accent)}
+.area svg{width:52px;height:52px;color:var(--accent)}
+.area p{color:var(--muted);margin-top:6px;font-size:.98rem}
+.area .go{display:inline-block;margin-top:10px;font-family:var(--f-display);font-size:.85rem;color:var(--accent);font-weight:600}
+
+/* lab benches */
+.bench{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.bench-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--sky) 45%,var(--surface))}
+.dots{display:flex;gap:6px;margin-right:6px}.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.btn{font-family:var(--f-display);font-size:.88rem;font-weight:500;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 14px;border-radius:999px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn[aria-pressed="true"],.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.bench-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}
+.pane{padding:20px;min-width:0}
+.pane+.pane{border-left:1px solid var(--line)}
+label.small{display:block;font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+textarea,input[type="text"]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px}
+textarea{min-height:260px;resize:vertical;font-size:.95rem;line-height:1.6}
+textarea:focus,input[type="text"]:focus{outline:none;border-color:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.stat{background:var(--bg);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font-family:var(--f-display);font-size:1.5rem;font-variant-numeric:tabular-nums}
+.stat span{font-size:.78rem;color:var(--muted)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.bars{display:grid;gap:6px}
+.bar{display:grid;grid-template-columns:7.5em minmax(0,1fr) 2.2em;gap:10px;align-items:center;font-family:var(--f-mono);font-size:.85rem}
+.bar .w{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right}
+.bar .track{height:16px;background:var(--bg);border-radius:4px;overflow:hidden}
+.bar .fill{height:100%;background:linear-gradient(90deg,var(--accent-2),var(--accent));border-radius:4px;transition:width .4s}
+.bar .n{font-variant-numeric:tabular-nums;color:var(--muted)}
+.check{display:flex;gap:8px;align-items:center;font-size:.9rem;color:var(--muted);margin-top:14px;cursor:pointer}
+.note{font-size:.88rem;color:var(--muted);margin-top:12px}
+.kwic-box{overflow-x:auto;margin-top:12px;background:var(--bg);border-radius:10px;padding:8px 0;max-height:300px;overflow-y:auto}
+.kwic{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);font-family:var(--f-mono);font-size:.82rem;min-width:520px}
+.kwic div{padding:3px 0;white-space:nowrap}
+.kwic .l{text-align:right;overflow:hidden;direction:rtl;padding-right:8px}
+.kwic .l bdi{direction:ltr}
+.kwic .k{color:var(--hl);font-weight:600;background:var(--hl-soft);padding:3px 6px;border-radius:4px}
+.kwic .r{overflow:hidden;padding-left:8px}
+.empty{color:var(--muted);font-style:italic;padding:12px 14px}
+.termtext{line-height:1.9;font-size:.95rem;background:var(--bg);border-radius:10px;padding:14px;max-height:260px;overflow:auto}
+mark.t{background:var(--hl-soft);color:var(--ink);border-bottom:2px solid var(--hl);padding:1px 2px;border-radius:3px}
+.termlist{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font-family:var(--f-mono);font-size:.82rem;padding:5px 10px;border-radius:8px;background:var(--hl-soft);color:var(--ink);border:1px solid color-mix(in srgb,var(--hl) 40%,transparent)}
+.chip small{color:var(--muted);margin-left:6px}
+
+/* pipeline */
+.raw{font-family:var(--f-mono);font-size:.85rem;background:var(--bg);border:1.5px dashed var(--line);border-radius:10px;padding:14px;white-space:pre-wrap;word-break:break-word;color:var(--muted)}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.step{display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;position:relative;padding-bottom:22px}
+.step::before{content:"";position:absolute;left:21px;top:44px;bottom:0;width:2px;background:var(--line)}
+.step:last-child::before{display:none}
+.step .num{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:700;border:2px solid var(--line);background:var(--surface);color:var(--muted);transition:all .3s}
+.step.active .num{border-color:var(--accent);color:var(--accent);animation:pulse 1s infinite}
+.step.done .num{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.step.done::before{background:var(--accent)}
+@keyframes pulse{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--accent) 20%,transparent)}}
+.step h3{margin-top:9px}
+.step .desc{color:var(--muted);font-size:.93rem;margin-top:2px}
+.out{margin-top:10px;min-height:20px}
+.out.wait{font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
+.out .fade{animation:fadein .5s both}
+@keyframes fadein{from{opacity:.0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.clean-log{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.clean-log span{font-family:var(--f-mono);font-size:.75rem;background:var(--ok-soft);color:var(--ok);padding:3px 8px;border-radius:6px}
+.clean-out{font-family:var(--f-mono);font-size:.88rem;background:var(--bg);border-radius:10px;padding:10px 12px}
+.toks{display:flex;flex-wrap:wrap;gap:6px}
+.tok{font-family:var(--f-mono);font-size:.82rem;padding:4px 8px;border-radius:6px;background:var(--sky);border:1px solid var(--line)}
+.tok.pos{display:grid;text-align:center;gap:1px;padding:5px 8px}
+.tok.pos b{font-size:.68rem;letter-spacing:.06em}
+.tok.pos i{font-style:normal;font-size:.7rem;color:var(--muted)}
+.p-N b{color:var(--accent)}.p-ADJ b{color:var(--hl)}.p-V b{color:var(--ok)}.p-DET b,.p-PREP b,.p-PRON b,.p-PUNT b,.p-PREPDET b{color:var(--muted)}
+.ficha{border:2px solid var(--accent);border-radius:var(--r);overflow:hidden;background:var(--surface)}
+.ficha header{background:linear-gradient(135deg,var(--accent-2),var(--accent));color:var(--on-accent);padding:14px 16px}
+.ficha header small{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.ficha header div{font-family:var(--f-display);font-size:1.35rem;font-weight:700}
+.ficha dl{margin:0;display:grid;grid-template-columns:9em minmax(0,1fr);gap:0}
+.ficha dt,.ficha dd{margin:0;padding:8px 16px;border-top:1px solid var(--line);font-size:.92rem}
+.ficha dt{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:10px}
+.lang{font-family:var(--f-mono);font-size:.7rem;background:var(--sky);padding:1px 6px;border-radius:4px;margin-right:6px}
+
+/* chatbot */
+.chat-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:24px;align-items:start}
+.chat{background:var(--surface);border:1px solid var(--line);border-radius:18px;display:flex;flex-direction:column;height:520px;overflow:hidden}
+.chat-head{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.chat-head svg{width:40px;height:40px}
+.chat-head b{font-family:var(--f-display)}
+.chat-head small{display:block;color:var(--ok);font-size:.78rem}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:85%;padding:10px 14px;border-radius:16px;font-size:.96rem;animation:fadein .3s both}
+.msg.bot{background:var(--sky);border-bottom-left-radius:4px;align-self:flex-start}
+.msg.me{background:var(--accent);color:var(--on-accent);border-bottom-right-radius:4px;align-self:flex-end}
+.msg .why{display:block;margin-top:6px;font-family:var(--f-mono);font-size:.72rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:5px}
+.typing{display:inline-flex;gap:4px}.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:bounce 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bounce{50%{transform:translateY(-4px)}}
+.sugs{display:flex;gap:6px;flex-wrap:wrap;padding:0 16px 10px}
+.sugs button{font-size:.8rem;padding:5px 10px}
+.chat form{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+.chat form input{border-radius:999px;padding:10px 16px}
+.how{display:grid;gap:14px}
+.how ol{margin:0;padding-left:1.2em;display:grid;gap:8px;color:var(--muted)}
+.how ol b{color:var(--ink)}
+.side-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+
+/* quiz */
+.quiz{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:28px}
+.quiz .robot{width:180px}
+.qprog{display:flex;gap:6px;margin-bottom:14px}.qprog i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.qprog i.ok{background:var(--ok)}.qprog i.ko{background:var(--bad)}.qprog i.cur{background:var(--accent)}
+.qq{font-family:var(--f-display);font-size:1.3rem;font-weight:600;margin-bottom:16px;text-wrap:balance}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;font:inherit;padding:12px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.qexp{margin-top:14px;color:var(--muted);min-height:1.5em}
+.qnav{margin-top:14px;display:flex;gap:8px}
+
+footer{border-top:1px solid var(--line);padding-block:32px;color:var(--muted);font-size:.9rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between}
+footer b{color:var(--ink);font-family:var(--f-display)}
+
+@media (max-width:860px){
+  .hero .wrap{grid-template-columns:1fr;padding-block:40px}
+  .bot-wrap{order:-1}.robot{width:150px}
+  .areas{grid-template-columns:1fr}
+  .bench-body{grid-template-columns:1fr}
+  .pane+.pane{border-left:0;border-top:1px solid var(--line)}
+  .chat-grid{grid-template-columns:1fr}
+  .quiz{grid-template-columns:1fr;padding:20px}.quiz .robot{width:110px;justify-self:center}
+  nav.top .brand{display:none}nav.top .links{margin-left:0}
+}
+@media (max-width:480px){
+  .ficha dl{grid-template-columns:1fr}.ficha dd{border-top:0;padding-top:0}
+  .bar{grid-template-columns:6em minmax(0,1fr) 2em}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<nav class="top" aria-label="Secciones">
+  <div class="wrap">
+    <span class="brand">Lab · Lingüística Computacional</span>
+    <div class="links">
+      <a href="#areas">Qué hacemos</a>
+      <a href="#corpus">Corpus</a>
+      <a href="#flujo">Automatización</a>
+      <a href="#chatbot">Chatbot</a>
+      <a href="#quiz">Quiz</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <canvas id="circuit" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">IV Jornadas · Las Ciencias del Lenguaje al alcance de todos</p>
+      <h1 style="margin-top:14px">Laboratorio de Lingüística <span>Computacional y Digital</span></h1>
+      <p class="inst"><b>UCA</b> · Instituto de Investigación en Lingüística Aplicada (ILA)</p>
+      <p class="thesis">Investigación, enseñanza y desarrollo en la intersección entre lingüística, informática y tecnologías de la comunicación actuales. Núcleo de innovación que <u>aplica métodos computacionales al estudio</u> y tratamiento del lenguaje humano, respondiendo a los desafíos de la era digital.</p>
+      <div class="tags">
+        <a class="tag" href="#corpus">Terminología computacional</a>
+        <a class="tag" href="#chatbot">Chatbots</a>
+        <a class="tag" href="#corpus">Creación de corpus</a>
+      </div>
+    </div>
+    <div class="bot-wrap">
+      <svg class="robot" id="heroBot" viewBox="0 0 200 230" role="img" aria-label="Robot del laboratorio">
+        <g class="bub bub1"><rect x="8" y="6" width="62" height="40" rx="8" fill="var(--accent-2)" opacity=".55"/><circle cx="26" cy="26" r="4" fill="var(--on-accent)"/><circle cx="39" cy="26" r="4" fill="var(--on-accent)"/><circle cx="52" cy="26" r="4" fill="var(--on-accent)"/></g>
+        <g class="bub bub2"><rect x="122" y="0" width="70" height="44" rx="8" fill="var(--accent)"/><path d="M140 44 l6 10 l6-10z" fill="var(--accent)"/><circle cx="142" cy="22" r="4" fill="var(--on-accent)"/><circle cx="157" cy="22" r="4" fill="var(--on-accent)"/><circle cx="172" cy="22" r="4" fill="var(--on-accent)"/></g>
+        <g class="head">
+          <line x1="100" y1="72" x2="100" y2="90" stroke="var(--ink)" stroke-width="4"/>
+          <circle cx="100" cy="68" r="7" fill="var(--hl)"/>
+          <rect x="28" y="116" width="16" height="34" rx="6" fill="var(--accent)"/>
+          <rect x="156" y="116" width="16" height="34" rx="6" fill="var(--accent)"/>
+          <rect x="38" y="90" width="124" height="88" rx="30" fill="var(--sky)" stroke="var(--accent)" stroke-width="4"/>
+          <rect x="54" y="104" width="92" height="58" rx="20" fill="var(--screen)"/>
+          <g class="eyes" fill="none" stroke="var(--eye)" stroke-width="6" stroke-linecap="round">
+            <path d="M70 136 q10 -14 20 0"/><path d="M110 136 q10 -14 20 0"/>
+          </g>
+          <path d="M92 150 q8 6 16 0" stroke="var(--eye)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <rect x="62" y="186" width="76" height="40" rx="14" fill="var(--accent)"/>
+        <rect x="88" y="196" width="24" height="10" rx="4" fill="var(--eye)" opacity=".8"/>
+      </svg>
+      <p class="hint" id="botHint">Tócame</p>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="block" id="areas">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Qué hacemos</p>
+      <h2>Cuatro líneas de trabajo</h2>
+      <p class="lead">Cada tarjeta lleva a una demostración que puedes probar ahora mismo desde el móvil.</p>
+    </div>
+    <div class="areas">
+      <a class="area" href="#chatbot">
+        <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 40v-6a14 14 0 1 1 18-13l3 7h-4v5a4 4 0 0 1-4 4h-4v3"/><circle cx="24" cy="20" r="4"/><path d="M24 13v3M24 24v3M17 20h3M28 20h3"/><rect x="34" y="4" width="14" height="10" rx="2"/><path d="M38 9h6"/><path d="M38 34a6 6 0 0 1 0 8M42 31a10 10 0 0 1 0 14"/></svg>
+        <div><h3>Ingeniería lingüística y lingüística computacional</h3><p>Investigación multidisciplinar con herramientas informáticas para el análisis avanzado de la lengua.</p><span class="go">Habla con nuestro bot →</span></div>
+      </a>
+      <a class="area" href="#flujo">
+        <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="26" cy="26" r="7"/><path d="M26 11v5M26 36v5M11 26h5M36 26h5M15.4 15.4l3.5 3.5M33.1 33.1l3.5 3.5M15.4 36.6l3.5-3.5M33.1 18.9l3.5-3.5"/><path d="M44 18a20 20 0 0 0-30-9M8 34a20 20 0 0 0 30 9"/><path d="M44 10v8h-8M8 42v-8h8"/></svg>
+        <div><h3>Automatización de flujos de trabajo</h3><p>Optimización de procesos, especialmente terminográficos, mediante técnicas híbridas y modelos de lenguaje.</p><span class="go">Ejecuta un flujo →</span></div>
+      </a>
+      <a class="area" href="#corpus">
+        <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M26 12c-5-4-13-5-20-4v30c7-1 15 0 20 4 5-4 13-5 20-4V8c-7-1-15 0-20 4z"/><path d="M26 12v30"/><path d="M11 16h9M11 22h9M11 28h9M32 16h9M32 22h9M32 28h9"/></svg>
+        <div><h3>Diseño y procesamiento de corpus</h3><p>Análisis, compilación y limpieza automatizada de grandes volúmenes de datos lingüísticos y experimentales para aplicaciones prácticas.</p><span class="go">Analiza un texto →</span></div>
+      </a>
+      <a class="area" href="#ficha">
+        <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="42" height="28" rx="3"/><path d="M20 44h12M26 36v8"/><path d="M12 29l8-9 7 5 9-11"/><circle cx="12" cy="29" r="2"/><circle cx="20" cy="20" r="2"/><circle cx="27" cy="25" r="2"/><circle cx="36" cy="14" r="2"/></svg>
+        <div><h3>Creación de recursos digitales</h3><p>Herramientas, diccionarios electrónicos y bases de datos con soporte digital para la investigación académica y la transferencia tecnológica.</p><span class="go">Mira una ficha terminológica →</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="corpus" style="padding-top:16px">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Mesa 1 · Corpus y terminología</p>
+      <h2>Mete un texto y míralo como lo ve un ordenador</h2>
+      <p class="lead">Un corpus es una colección de textos reales que se estudia con herramientas informáticas. Elige un ejemplo o pega el tuyo: los resultados cambian mientras escribes.</p>
+    </div>
+    <div class="bench">
+      <div class="bench-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <button class="btn" id="sampleA" aria-pressed="true">Texto general: Cádiz</button>
+        <button class="btn" id="sampleB" aria-pressed="false">Texto especializado: eólica marina</button>
+        <button class="btn" id="sampleC" aria-pressed="false">Mi texto</button>
+      </div>
+      <div class="bench-body">
+        <div class="pane">
+          <label class="small" for="corpusText">Tu corpus</label>
+          <textarea id="corpusText" spellcheck="false"></textarea>
+          <div class="stats">
+            <div class="stat"><b id="sTok">0</b><span>tokens (palabras)</span></div>
+            <div class="stat"><b id="sTyp">0</b><span>types (distintas)</span></div>
+            <div class="stat"><b id="sTtr">0</b><span>riqueza léxica (TTR)</span></div>
+          </div>
+        </div>
+        <div class="pane">
+          <div class="tabs" role="tablist">
+            <button class="btn" role="tab" data-tab="freq" aria-pressed="true">Frecuencias</button>
+            <button class="btn" role="tab" data-tab="kwic" aria-pressed="false">Concordancias</button>
+            <button class="btn" role="tab" data-tab="terms" aria-pressed="false">Extraer términos</button>
+          </div>
+          <div data-panel="freq">
+            <div class="bars" id="bars"></div>
+            <label class="check"><input type="checkbox" id="stopToggle" checked> Ocultar palabras vacías (el, de, que, y…)</label>
+            <p class="note">Las palabras vacías son las más frecuentes en cualquier texto, pero dicen poco del tema. Desactiva la casilla y verás que «de» y «la» lo dominan todo.</p>
+          </div>
+          <div data-panel="kwic" hidden>
+            <label class="small" for="kwicInput">Busca una palabra (usa * como comodín: eólic*)</label>
+            <input type="text" id="kwicInput" value="mar" autocomplete="off">
+            <div class="kwic-box"><div class="kwic" id="kwic"></div></div>
+            <p class="note">Esto es una <b>concordancia KWIC</b> (<i>keyword in context</i>): cada aparición de la palabra con su contexto a izquierda y derecha. Así los lingüistas descubren cómo se usa una palabra de verdad.</p>
+          </div>
+          <div data-panel="terms" hidden>
+            <div class="termtext" id="termText"></div>
+            <div class="termlist" id="termList"></div>
+            <p class="note">Buscamos combinaciones de palabras con contenido que se repiten (por ejemplo «parque eólico»). Esa repetición delata a los <b>términos</b>, las palabras propias de un ámbito especializado. Funciona mucho mejor con el texto especializado.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="flujo" style="padding-top:16px">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Mesa 2 · Automatización terminográfica</p>
+      <h2>De un texto sucio a una ficha de diccionario</h2>
+      <p class="lead">Crear una ficha terminológica a mano lleva su tiempo. Encadenando pasos automáticos, el ordenador hace el trabajo repetitivo y la persona experta revisa el resultado.</p>
+    </div>
+    <div class="bench">
+      <div class="bench-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <button class="btn primary" id="runFlow">Ejecutar flujo</button>
+        <button class="btn" id="stepFlow">Paso a paso</button>
+        <button class="btn" id="resetFlow">Reiniciar</button>
+      </div>
+      <div class="pane">
+        <label class="small">Entrada: texto copiado de una web</label>
+        <div class="raw" id="rawText"></div>
+        <ol class="steps" style="margin-top:24px">
+          <li class="step" data-step="0"><span class="num">1</span><div><h3>Limpieza</h3><p class="desc">Quitar etiquetas HTML, referencias y espacios de sobra; normalizar mayúsculas.</p><div class="out wait">esperando…</div></div></li>
+          <li class="step" data-step="1"><span class="num">2</span><div><h3>Tokenización</h3><p class="desc">Cortar el texto en unidades: palabras y signos.</p><div class="out wait">esperando…</div></div></li>
+          <li class="step" data-step="2"><span class="num">3</span><div><h3>Etiquetado morfosintáctico</h3><p class="desc">Asignar a cada token su categoría gramatical y su lema (la forma de diccionario).</p><div class="out wait">esperando…</div></div></li>
+          <li class="step" data-step="3"><span class="num">4</span><div><h3>Extracción de candidatos a término</h3><p class="desc">Buscar patrones típicos de los términos: sustantivo + adjetivo, sustantivo + de + sustantivo…</p><div class="out wait">esperando…</div></div></li>
+          <li class="step" data-step="4" id="ficha"><span class="num">5</span><div><h3>Ficha terminológica</h3><p class="desc">Un modelo de lenguaje propone definición y equivalentes; la terminóloga valida.</p><div class="out wait">esperando…</div></div></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="chatbot" style="padding-top:16px">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Mesa 3 · Chatbots</p>
+      <h2>Habla con Lingüi</h2>
+      <p class="lead">Lingüi es un chatbot de reglas, como los primeros que se programaron. Pregúntale por el laboratorio y fíjate en la línea gris: te enseña qué ha entendido.</p>
+    </div>
+    <div class="chat-grid">
+      <div class="chat">
+        <div class="chat-head">
+          <svg viewBox="38 60 124 124" aria-hidden="true"><circle cx="100" cy="68" r="7" fill="var(--hl)"/><line x1="100" y1="72" x2="100" y2="90" stroke="var(--ink)" stroke-width="4"/><rect x="38" y="90" width="124" height="88" rx="30" fill="var(--sky)" stroke="var(--accent)" stroke-width="5"/><rect x="54" y="104" width="92" height="58" rx="20" fill="var(--screen)"/><g fill="none" stroke="var(--eye)" stroke-width="7" stroke-linecap="round"><path d="M70 136 q10 -14 20 0"/><path d="M110 136 q10 -14 20 0"/></g></svg>
+          <div><b>Lingüi</b><small>● en línea</small></div>
+          <label class="check" style="margin:0 0 0 auto;font-size:.8rem"><input type="checkbox" id="whyToggle" checked> Ver cómo pienso</label>
+        </div>
+        <div class="msgs" id="msgs" aria-live="polite"></div>
+        <div class="sugs" id="sugs"></div>
+        <form id="chatForm">
+          <input type="text" id="chatInput" placeholder="Escribe tu pregunta…" autocomplete="off" aria-label="Mensaje para Lingüi">
+          <button class="btn primary" type="submit">Enviar</button>
+        </form>
+      </div>
+      <div class="how">
+        <div class="side-card">
+          <h3>Cómo funciona por dentro</h3>
+          <ol style="margin-top:10px">
+            <li><b>Normaliza</b> tu mensaje: minúsculas y sin tildes.</li>
+            <li><b>Busca palabras clave</b> en una lista («corpus», «estudiar», «dónde»…).</li>
+            <li><b>Elige la intención</b> que más encaja y devuelve una respuesta escrita de antemano.</li>
+          </ol>
+        </div>
+        <div class="side-card">
+          <h3>¿Y ChatGPT o Claude?</h3>
+          <p class="note" style="margin-top:8px">Los asistentes actuales no tienen respuestas escritas: generan el texto palabra a palabra con un modelo de lenguaje entrenado con corpus enormes. En el laboratorio combinamos los dos mundos, reglas lingüísticas y modelos de lenguaje, en lo que llamamos técnicas híbridas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="quiz" style="padding-top:16px">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Antes de irte</p>
+      <h2>¿Cuánto has aprendido?</h2>
+    </div>
+    <div class="quiz">
+      <svg class="robot" id="quizBot" viewBox="20 56 160 176" aria-hidden="true">
+        <g class="head">
+          <line x1="100" y1="72" x2="100" y2="90" stroke="var(--ink)" stroke-width="4"/>
+          <circle cx="100" cy="68" r="7" fill="var(--hl)"/>
+          <rect x="28" y="116" width="16" height="34" rx="6" fill="var(--accent)"/>
+          <rect x="156" y="116" width="16" height="34" rx="6" fill="var(--accent)"/>
+          <rect x="38" y="90" width="124" height="88" rx="30" fill="var(--sky)" stroke="var(--accent)" stroke-width="4"/>
+          <rect x="54" y="104" width="92" height="58" rx="20" fill="var(--screen)"/>
+          <g class="eyes" id="quizEyes" fill="none" stroke="var(--eye)" stroke-width="6" stroke-linecap="round"><path d="M70 136 q10 -14 20 0"/><path d="M110 136 q10 -14 20 0"/></g>
+          <path id="quizMouth" d="M92 150 q8 6 16 0" stroke="var(--eye)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <rect x="62" y="186" width="76" height="40" rx="14" fill="var(--accent)"/>
+      </svg>
+      <div id="quizBox" style="min-width:0"></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b>Laboratorio de Lingüística Computacional y Digital</b><br>Instituto de Investigación en Lingüística Aplicada (ILA) · Universidad de Cádiz</div>
+    <div>IV Jornadas de Divulgación Científica<br>20 de octubre de 2026 · Facultad de Filosofía y Letras</div>
+  </div>
+</footer>
+
+<script>
+(() => {
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- circuit canvas ---------- */
+const cv = $('#circuit'), cx = cv.getContext('2d');
+let paths = [], pulses = [], colors = {}, frame = 0;
+function readColors(){ const cs = getComputedStyle(document.documentElement); colors = {line: cs.getPropertyValue('--line').trim(), acc: cs.getPropertyValue('--accent').trim(), acc2: cs.getPropertyValue('--accent-2').trim()}; }
+function buildCircuit(){
+  const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
+  cv.width = w * dpr; cv.height = h * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  paths = []; const g = 18, n = Math.max(6, Math.round(w / 90));
+  for (let i = 0; i < n; i++){
+    const fromLeft = i % 2 === 0;
+    let x = fromLeft ? 0 : w, y = Math.round((Math.random() * h) / g) * g;
+    const pts = [[x, y]], dir = fromLeft ? 1 : -1, segs = 3 + Math.floor(Math.random() * 3);
+    for (let s = 0; s < segs; s++){
+      x += dir * g * (2 + Math.floor(Math.random() * 5)); pts.push([x, y]);
+      if (s < segs - 1){ x += dir * g; y += g * (Math.random() < .5 ? -1 : 1) * (1 + Math.floor(Math.random() * 2)); pts.push([x, y]); }
+    }
+    paths.push(pts);
+  }
+  pulses = paths.map(() => Math.random());
+}
+function plen(p){ let L = 0; for (let i = 1; i < p.length; i++) L += Math.hypot(p[i][0]-p[i-1][0], p[i][1]-p[i-1][1]); return L; }
+function pointAt(p, t){ let d = t * plen(p); for (let i = 1; i < p.length; i++){ const s = Math.hypot(p[i][0]-p[i-1][0], p[i][1]-p[i-1][1]); if (d <= s){ const k = d / s; return [p[i-1][0] + (p[i][0]-p[i-1][0])*k, p[i-1][1] + (p[i][1]-p[i-1][1])*k]; } d -= s; } return p[p.length-1]; }
+function drawCircuit(){
+  if (frame++ % 90 === 0) readColors();
+  const w = cv.clientWidth, h = cv.clientHeight; cx.clearRect(0, 0, w, h);
+  cx.lineWidth = 1.5; cx.strokeStyle = colors.line; cx.fillStyle = colors.line;
+  paths.forEach((p, i) => {
+    cx.globalAlpha = .9; cx.beginPath(); p.forEach(([x, y], j) => j ? cx.lineTo(x, y) : cx.moveTo(x, y)); cx.stroke();
+    const e = p[p.length-1]; cx.beginPath(); cx.arc(e[0], e[1], 3.5, 0, 7); cx.fillStyle = colors.line; cx.fill();
+    if (!reduce){
+      pulses[i] = (pulses[i] + .0025 + (i % 3) * .001) % 1;
+      const [x, y] = pointAt(p, pulses[i]); cx.globalAlpha = .75; cx.beginPath(); cx.arc(x, y, 3, 0, 7); cx.fillStyle = i % 2 ? colors.acc : colors.acc2; cx.fill();
+    }
+  });
+  cx.globalAlpha = 1;
+  if (!reduce) requestAnimationFrame(drawCircuit);
+}
+readColors(); buildCircuit(); drawCircuit();
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { buildCircuit(); if (reduce) drawCircuit(); }, 150); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); if (reduce) drawCircuit(); });
+
+/* hero robot */
+const hellos = ['¡Hola! Soy el robot del lab', 'Proceso lenguaje humano', 'Baja y prueba las demos', 'Me encantan los corpus', 'Tócame otra vez'];
+let hi = 0; $('#heroBot').addEventListener('click', () => {
+  const b = $('#heroBot'); b.classList.remove('wave'); void b.getBoundingClientRect(); b.classList.add('wave');
+  $('#botHint').textContent = hellos[hi++ % hellos.length];
+});
+
+/* ---------- corpus ---------- */
+const SAMPLES = {
+  A: 'Cádiz es una ciudad rodeada de mar. En Cádiz el mar se mira, se escucha y se canta. Los gaditanos hablan con gracia y con prisa: se comen las eses, alargan las vocales y convierten cualquier conversación en una pequeña fiesta. El carnaval de Cádiz es también una fiesta de la lengua, porque las chirigotas juegan con las palabras, con los dobles sentidos y con la actualidad. Quien estudia la lengua en Cádiz descubre que cada barrio tiene su manera de hablar, y que el habla de la calle también es un corpus que merece la pena analizar. Frente al mar, en la Caleta, cualquier conversación acaba siendo un pequeño corpus oral.',
+  B: 'La energía eólica marina es una de las energías renovables con mayor crecimiento en Europa. Un parque eólico marino está formado por aerogeneradores instalados en alta mar, donde el viento sopla con más fuerza y de forma más constante. En aguas profundas se utilizan aerogeneradores flotantes, anclados al fondo marino. La electricidad producida en el parque eólico viaja a tierra mediante cables submarinos y se conecta a la red eléctrica. Antes de construir cada parque eólico, los estudios de impacto ambiental analizan su efecto sobre la fauna marina y el fondo marino. Tender cables submarinos también tiene un impacto ambiental. Gracias a los aerogeneradores flotantes, la energía eólica marina llega a zonas de alta mar que antes eran inaccesibles, y la red eléctrica recibe más energías renovables.',
+  C: ''
+};
+const STOP = new Set('el la los las lo un una unos unas uno de del al a ante con contra en entre hacia hasta para por según sin sobre tras y e o u ni que se su sus es son ser fue era eran le les me te nos os mi mis tu tus este esta estos estas ese esa esos esas aquel aquella no sí si más muy ya también como cuando donde quien porque pero sino cada todo toda todos todas otro otra otros otras hay ha han he está están estar mediante antes puede tiene tienen yo tú él ella ellos ellas nosotros usted cual qué cómo'.split(' '));
+const ta = $('#corpusText'); let current = 'A';
+const tokenize = text => { const re = /[\p{L}\p{N}]+(?:['’-][\p{L}\p{N}]+)*/gu, out = []; let m; while ((m = re.exec(text))) out.push({w: m[0], lw: m[0].toLowerCase(), i: m.index, end: m.index + m[0].length}); return out; };
+
+function setSample(k){
+  if (current === 'C') SAMPLES.C = ta.value;
+  current = k; ta.value = SAMPLES[k];
+  if (k === 'C') { ta.placeholder = 'Pega aquí cualquier texto: una noticia, una canción, un mensaje…'; ta.focus(); }
+  ['A','B','C'].forEach(x => $('#sample' + x).setAttribute('aria-pressed', x === k));
+  if (k === 'B') $('#kwicInput').value = 'parque'; else if (k === 'A') $('#kwicInput').value = 'mar';
+  analyze();
+}
+$('#sampleA').onclick = () => setSample('A'); $('#sampleB').onclick = () => setSample('B'); $('#sampleC').onclick = () => setSample('C');
+
+$$('[role="tab"]').forEach(b => b.onclick = () => {
+  $$('[role="tab"]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  $$('[data-panel]').forEach(p => p.hidden = p.dataset.panel !== b.dataset.tab);
+});
+
+function analyze(){
+  const text = ta.value, toks = tokenize(text), counts = new Map();
+  toks.forEach(t => counts.set(t.lw, (counts.get(t.lw) || 0) + 1));
+  $('#sTok').textContent = toks.length.toLocaleString('es');
+  $('#sTyp').textContent = counts.size.toLocaleString('es');
+  $('#sTtr').textContent = toks.length ? (counts.size / toks.length).toFixed(2).replace('.', ',') : '0';
+  // freq
+  const hide = $('#stopToggle').checked;
+  const top = [...counts].filter(([w]) => !hide || !STOP.has(w)).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'es')).slice(0, 12);
+  const max = top.length ? top[0][1] : 1;
+  $('#bars').innerHTML = top.length ? top.map(([w, n]) => `<div class="bar"><span class="w" title="${esc(w)}">${esc(w)}</span><span class="track"><span class="fill" style="width:${(n / max * 100).toFixed(1)}%"></span></span><span class="n">${n}</span></div>`).join('') : '<p class="empty">Escribe algo en el cuadro de la izquierda.</p>';
+  kwic(text, toks); terms(text, toks);
+}
+function kwic(text, toks){
+  const q = $('#kwicInput').value.trim().toLowerCase();
+  if (!q){ $('#kwic').innerHTML = '<p class="empty" style="grid-column:1/-1">Escribe una palabra para buscarla.</p>'; return; }
+  const rx = new RegExp('^' + q.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '[\\p{L}\\p{N}]*') + '$', 'u');
+  const hits = toks.filter(t => rx.test(t.lw));
+  const W = 42, clip = s => s.replace(/\s+/g, ' ');
+  $('#kwic').innerHTML = hits.length ? hits.map(t => {
+    const L = clip(text.slice(Math.max(0, t.i - W), t.i)), R = clip(text.slice(t.end, t.end + W));
+    return `<div class="l"><bdi>${esc(L)}</bdi></div><div><span class="k">${esc(t.w)}</span></div><div class="r">${esc(R)}</div>`;
+  }).join('') : `<p class="empty" style="grid-column:1/-1">«${esc(q)}» no aparece en este texto.</p>`;
+}
+function terms(text, toks){
+  // segment on punctuation between tokens
+  const segs = []; let cur = [];
+  toks.forEach((t, k) => { if (k && /[.,;:!?¿¡()"«»\n]/.test(text.slice(toks[k-1].end, t.i))) { segs.push(cur); cur = []; } cur.push(t); });
+  if (cur.length) segs.push(cur);
+  const cand = new Map();
+  segs.forEach(seg => { for (let n = 2; n <= 3; n++) for (let i = 0; i + n <= seg.length; i++){
+    const g = seg.slice(i, i + n);
+    if (STOP.has(g[0].lw) || STOP.has(g[n-1].lw) || /^\d+$/.test(g[0].lw) || /^\d+$/.test(g[n-1].lw)) continue;
+    const key = g.map(t => t.lw).join(' '); cand.set(key, (cand.get(key) || 0) + 1);
+  }});
+  let list = [...cand].filter(([, f]) => f >= 2);
+  list = list.filter(([k, f]) => !list.some(([k2, f2]) => k2 !== k && f2 === f && (' ' + k2 + ' ').includes(' ' + k + ' ')));
+  list.sort((a, b) => b[1] * b[0].split(' ').length - a[1] * a[0].split(' ').length);
+  $('#termList').innerHTML = list.length ? list.map(([k, f]) => `<span class="chip">${esc(k)}<small>×${f}</small></span>`).join('') : '<p class="empty" style="padding:0">No hay combinaciones repetidas. Prueba con el texto especializado.</p>';
+  // highlight
+  const keys = new Set(list.map(([k]) => k)); let html = '', pos = 0;
+  segs.forEach(seg => { for (let i = 0; i < seg.length; i++){
+    for (const n of [3, 2]){ if (i + n > seg.length) continue;
+      const g = seg.slice(i, i + n), key = g.map(t => t.lw).join(' ');
+      if (keys.has(key)){ const a = g[0].i, b = g[n-1].end; html += esc(text.slice(pos, a)) + `<mark class="t">${esc(text.slice(a, b))}</mark>`; pos = b; i += n - 1; break; }
+    }
+  }});
+  html += esc(text.slice(pos));
+  $('#termText').innerHTML = html || '<span class="empty">Sin texto.</span>';
+}
+let at; ta.addEventListener('input', () => { clearTimeout(at); at = setTimeout(analyze, 120); });
+$('#stopToggle').onchange = analyze;
+$('#kwicInput').addEventListener('input', analyze);
+ta.value = SAMPLES.A; analyze();
+
+/* ---------- pipeline ---------- */
+const RAW = '<p>La   ENERGÍA eólica marina&nbsp;es una fuente de energía renovable que aprovecha la fuerza del viento en alta mar.</p>\n<br/>   <span class="nota">[1]</span>';
+$('#rawText').textContent = RAW;
+const LEX = {la:['DET','el'], energía:['N','energía'], eólica:['ADJ','eólico'], marina:['ADJ','marino'], es:['V','ser'], una:['DET','uno'], fuente:['N','fuente'], de:['PREP','de'], renovable:['ADJ','renovable'], que:['PRON','que'], aprovecha:['V','aprovechar'], fuerza:['N','fuerza'], del:['PREPDET','de + el'], viento:['N','viento'], en:['PREP','en'], alta:['ADJ','alto'], mar:['N','mar'], '.':['PUNT','.']};
+const TAGNAME = {N:'SUST', ADJ:'ADJ', V:'VERBO', DET:'DET', PREP:'PREP', PREPDET:'PREP+DET', PRON:'PRON', PUNT:'PUNT'};
+const PATTERNS = [['N','PREP','N','ADJ'], ['N','ADJ','ADJ'], ['N','PREP','N'], ['N','ADJ'], ['ADJ','N']];
+const PNAME = {N:'sust', ADJ:'adj', PREP:'prep'};
+let cleaned = '', tokens = [], tagged = [];
+const STEPS = [
+  () => {
+    const log = [];
+    const tags = (RAW.match(/<[^>]+>/g) || []).length; log.push(`${tags} etiquetas HTML fuera`);
+    let s = RAW.replace(/<[^>]+>/g, ' ');
+    const nb = (s.match(/&nbsp;/g) || []).length; s = s.replace(/&nbsp;/g, ' '); log.push(`${nb} &nbsp; → espacio`);
+    const refs = (s.match(/\[\d+\]/g) || []).length; s = s.replace(/\[\d+\]/g, ''); log.push(`${refs} nota [1] eliminada`);
+    let caps = 0; s = s.replace(/(?<!\p{L})\p{Lu}{2,}(?!\p{L})/gu, w => (caps++, w.toLowerCase())); log.push(`${caps} palabra en MAYÚSCULAS normalizada`);
+    s = s.replace(/\s+/g, ' ').trim(); log.push('espacios sobrantes fuera');
+    cleaned = s;
+    return `<div class="fade"><div class="clean-out">${esc(s)}</div><div class="clean-log">${log.map(l => `<span>✓ ${esc(l)}</span>`).join('')}</div></div>`;
+  },
+  () => {
+    tokens = cleaned.match(/\p{L}+|[^\s\p{L}]/gu) || [];
+    return `<div class="fade"><div class="toks">${tokens.map(t => `<span class="tok">${esc(t)}</span>`).join('')}</div><p class="note">${tokens.length} tokens: ${tokens.length - 1} palabras y 1 signo de puntuación.</p></div>`;
+  },
+  () => {
+    tagged = tokens.map(t => { const [tag, lem] = LEX[t.toLowerCase()] || ['N', t.toLowerCase()]; return {t, tag, lem}; });
+    return `<div class="fade"><div class="toks">${tagged.map(x => `<span class="tok pos p-${x.tag}"><b>${TAGNAME[x.tag]}</b>${esc(x.t)}<i>${esc(x.lem)}</i></span>`).join('')}</div></div>`;
+  },
+  () => {
+    const found = [];
+    tagged.forEach((_, i) => PATTERNS.forEach(p => {
+      if (i + p.length > tagged.length) return;
+      if (p.every((tag, j) => tagged[i + j].tag === tag)) found.push({i, p, text: tagged.slice(i, i + p.length).map(x => x.t.toLowerCase()).join(' ')});
+    }));
+    // drop a match that is a prefix of a longer match at the same start
+    const keep = found.filter(f => !found.some(g => g !== f && g.i === f.i && g.p.length > f.p.length));
+    return `<div class="fade"><div class="termlist" style="margin-top:0">${keep.map((f, k) => `<span class="chip"${k === 0 ? ' style="border-width:2px;border-color:var(--hl)"' : ''}>${esc(f.text)}<small>${f.p.map(t => PNAME[t]).join(' + ')}</small></span>`).join('')}</div><p class="note">${keep.length} candidatos. Elegimos «${esc(keep[0].text)}» para la ficha.</p></div>`;
+  },
+  () => `<div class="fade ficha">
+      <header><small>Ficha terminológica · Energías renovables</small><div>energía eólica marina</div></header>
+      <dl>
+        <dt>Categoría</dt><dd>sintagma nominal, femenino</dd>
+        <dt>Definición</dt><dd>Energía obtenida del viento mediante aerogeneradores instalados en el mar, fijos o flotantes.</dd>
+        <dt>Equivalentes</dt><dd><span class="lang">EN</span>offshore wind energy<br><span class="lang">FR</span>énergie éolienne en mer<br><span class="lang">DE</span>Offshore-Windenergie</dd>
+        <dt>Variantes</dt><dd>eólica marina · energía eólica offshore</dd>
+        <dt>Contexto</dt><dd><i>«La <b>energía eólica marina</b> es una fuente de energía renovable que aprovecha la fuerza del viento en alta mar.»</i></dd>
+        <dt>Estado</dt><dd><span class="chip" style="background:var(--ok-soft);border-color:var(--ok);color:var(--ok)">pendiente de validación humana</span></dd>
+      </dl>
+    </div>`
+];
+let stepIdx = 0, running = false;
+function doStep(){
+  if (stepIdx >= STEPS.length) return false;
+  const li = $$('.step')[stepIdx];
+  li.classList.remove('active'); li.classList.add('done');
+  const out = $('.out', li); out.classList.remove('wait'); out.innerHTML = STEPS[stepIdx]();
+  stepIdx++;
+  const next = $$('.step')[stepIdx]; if (next) next.classList.add('active');
+  $('#stepFlow').disabled = $('#runFlow').disabled = stepIdx >= STEPS.length;
+  return true;
+}
+function resetFlow(){
+  running = false; stepIdx = 0;
+  $$('.step').forEach(li => { li.classList.remove('done', 'active'); const o = $('.out', li); o.className = 'out wait'; o.textContent = 'esperando…'; });
+  $('#stepFlow').disabled = $('#runFlow').disabled = false;
+}
+$('#stepFlow').onclick = () => { if (!running) { if (!stepIdx) $$('.step')[0].classList.add('active'); setTimeout(doStep, stepIdx ? 0 : 300); } };
+$('#runFlow').onclick = () => {
+  if (running) return; running = true; $('#runFlow').disabled = $('#stepFlow').disabled = true;
+  $$('.step')[stepIdx]?.classList.add('active');
+  const tick = () => { if (!running) return; if (doStep() && stepIdx < STEPS.length) setTimeout(tick, reduce ? 50 : 900); else running = false; };
+  setTimeout(tick, reduce ? 50 : 700);
+};
+$('#resetFlow').onclick = resetFlow;
+
+/* ---------- chatbot ---------- */
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const INTENTS = [
+  {id:'SALUDO', kw:['hola','buenas','hey','saludos','que tal'], r:['¡Hola! Soy Lingüi, el bot del Laboratorio de Lingüística Computacional y Digital. Pregúntame qué hacemos, qué es un corpus o qué se puede estudiar.']},
+  {id:'ADIOS', kw:['adios','chao','hasta luego','me voy','nos vemos'], r:['¡Hasta pronto! Si te ha gustado, pásate por el ILA de la UCA.']},
+  {id:'GRACIAS', kw:['gracias','genial','guay','que bien','mola'], r:['¡De nada! Me han programado para ser amable, pero me alegro igual.']},
+  {id:'BOT', kw:['quien eres','como funcionas','eres un','eres una','que eres','como piensas','bot','robot'], r:['Soy un bot de reglas: busco palabras clave en tu mensaje y elijo una respuesta escrita de antemano. Si escribes algo que no está en mi lista, me pierdo. Prueba a hacerme una pregunta rara y verás.']},
+  {id:'IA', kw:['inteligencia artificial','chatgpt','gpt','claude','modelo de lenguaje','modelos de lenguaje','llm',' ia ','gemini'], r:['Los modelos de lenguaje generan texto palabra a palabra tras entrenarse con corpus gigantescos. En el laboratorio los combinamos con conocimiento lingüístico (técnicas híbridas), por ejemplo para automatizar la terminografía.']},
+  {id:'CORPUS', kw:['corpus','corpora','textos','datos','frecuencia','concordancia'], r:['Un corpus es una colección de textos reales, escritos u orales, organizada para estudiarla con ordenador. Diseñamos, compilamos y limpiamos corpus de forma automatizada. Puedes probarlo en la Mesa 1 de esta página.']},
+  {id:'TERMINOLOGIA', kw:['termin','diccionario','glosario','traduc','ficha','especializad'], r:['Los términos son las palabras de un ámbito especializado: «parque eólico», «fondo marino»… La terminología computacional los detecta y organiza con ayuda del ordenador para crear diccionarios electrónicos y bases de datos.']},
+  {id:'AUTOMATIZACION', kw:['automati','flujo','proceso','pipeline'], r:['Encadenamos pasos automáticos (limpieza, tokenización, etiquetado, extracción) para que el trabajo repetitivo lo haga la máquina y la persona experta revise. Míralo en marcha en la Mesa 2.']},
+  {id:'LAB', kw:['que haceis','que hacen','que hace','laboratorio','lab','investiga','lineas'], r:['Investigamos, enseñamos y desarrollamos herramientas en la intersección entre lingüística e informática. Trabajamos en cuatro líneas: ingeniería lingüística, corpus, automatización de flujos y recursos digitales.']},
+  {id:'ESTUDIOS', kw:['estudiar','carrera','trabajo','trabajar','salida','empleo','futuro','aprender','grado','master','profesion'], r:['La lingüística computacional tiene muchas salidas: empresas de tecnología del lenguaje, traducción y localización, asistentes virtuales, lexicografía digital o investigación. Se llega desde las filologías, la lingüística o la traducción, aprendiendo algo de programación por el camino.']},
+  {id:'VISITA', kw:['donde','visita','jornada','hora','cuando','ubicacion'], r:['Estamos en el Instituto de Investigación en Lingüística Aplicada (ILA) de la UCA. Hoy, 20 de octubre, la visita a gabinetes y laboratorios es de 13:30 a 14:30.']},
+  {id:'CADIZ', kw:['cadiz','gaditan','carnaval','chirigota','pisha','quillo'], r:['¡Quillo! El habla gaditana también es un corpus estupendo: aspiraciones, eses que desaparecen y un vocabulario propio. Con las herramientas adecuadas se puede estudiar con datos.']},
+];
+const FALLBACK = ['Mmm, no tengo ninguna regla para eso. Así fallan los bots de reglas: solo entienden lo que alguien previó. Prueba con «corpus», «terminología» o «¿qué puedo estudiar?».', 'No he encontrado ninguna palabra clave conocida. Un modelo de lenguaje sí intentaría responder; yo solo sé lo que me escribieron. ¿Me preguntas por el laboratorio?'];
+let fb = 0;
+const SUGS = ['¿Qué hacéis?', '¿Qué es un corpus?', 'Terminología', '¿Qué puedo estudiar?', '¿Cómo funcionas?', '¿Y ChatGPT?'];
+function reply(text){
+  const n = ' ' + norm(text).replace(/[¿?¡!.,;:]/g, ' ') + ' ';
+  for (const it of INTENTS){ const k = it.kw.find(w => n.includes(w.startsWith(' ') ? w : w)); if (k) return {text: it.r[0], why: `intención: ${it.id} · palabra clave: «${k.trim()}»`}; }
+  return {text: FALLBACK[fb++ % FALLBACK.length], why: 'intención: DESCONOCIDA · ninguna palabra clave coincide'};
+}
+const msgs = $('#msgs');
+function addMsg(who, text, why){
+  const d = document.createElement('div'); d.className = 'msg ' + who; d.textContent = text;
+  if (why){ const s = document.createElement('span'); s.className = 'why'; s.textContent = why; s.hidden = !$('#whyToggle').checked; d.appendChild(s); }
+  msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; return d;
+}
+function ask(text){
+  if (!text.trim()) return;
+  addMsg('me', text);
+  const t = document.createElement('div'); t.className = 'msg bot'; t.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>'; msgs.appendChild(t); msgs.scrollTop = msgs.scrollHeight;
+  const r = reply(text);
+  setTimeout(() => { t.remove(); addMsg('bot', r.text, r.why); }, reduce ? 0 : 500 + Math.min(900, r.text.length * 6));
+}
+$('#sugs').innerHTML = SUGS.map(s => `<button class="btn" type="button">${esc(s)}</button>`).join('');
+$$('#sugs button').forEach(b => b.onclick = () => ask(b.textContent));
+$('#chatForm').addEventListener('submit', e => { e.preventDefault(); const i = $('#chatInput'); ask(i.value); i.value = ''; });
+$('#whyToggle').onchange = e => $$('.msg .why').forEach(s => s.hidden = !e.target.checked);
+addMsg('bot', '¡Hola! Soy Lingüi. Pregúntame lo que quieras sobre el laboratorio, o pulsa una de las sugerencias.', 'intención: BIENVENIDA · mensaje inicial programado');
+
+/* ---------- quiz ---------- */
+const QUIZ = [
+  {q:'¿Qué es un corpus?', o:['Una colección de textos reales organizada para estudiarla','Un programa que traduce automáticamente','El conjunto de reglas gramaticales de una lengua'], a:0, e:'Un corpus reúne textos o grabaciones reales para analizar cómo se usa de verdad la lengua.'},
+  {q:'¿Cuántos tokens tiene «El gato come pescado.» si contamos el punto?', o:['4','5','3'], a:1, e:'Cuatro palabras más el signo de puntuación: 5 tokens.'},
+  {q:'¿Cuál de estas expresiones es un término especializado?', o:['«una tarde preciosa»','«muchas gracias»','«parque eólico marino»'], a:2, e:'«Parque eólico marino» designa un concepto concreto del ámbito de las energías renovables.'},
+  {q:'ELIZA, uno de los primeros chatbots, se creó en…', o:['1966','1995','2022'], a:0, e:'Joseph Weizenbaum la programó en el MIT en 1966. Funcionaba con reglas, como Lingüi.'},
+  {q:'Si un texto tiene una riqueza léxica (TTR) muy alta, significa que…', o:['Repite mucho las mismas palabras','Usa un vocabulario muy variado','Tiene muchas faltas de ortografía'], a:1, e:'TTR = palabras distintas ÷ palabras totales. Cuanto más alto, más variado es el vocabulario.'},
+];
+let qi = 0, results = [];
+const mouth = {happy:'M88 148 q12 12 24 0', sad:'M90 154 q10 -8 20 0', neutral:'M92 150 q8 6 16 0'};
+const setFace = f => $('#quizMouth').setAttribute('d', mouth[f]);
+function renderQ(){
+  const box = $('#quizBox'), prog = QUIZ.map((_, k) => `<i class="${results[k] === true ? 'ok' : results[k] === false ? 'ko' : k === qi ? 'cur' : ''}"></i>`).join('');
+  if (qi >= QUIZ.length){
+    const s = results.filter(Boolean).length;
+    setFace(s >= 3 ? 'happy' : 'sad');
+    box.innerHTML = `<div class="qprog">${prog}</div><p class="qq">${s} de ${QUIZ.length} aciertos</p><p class="qexp">${s === 5 ? '¡Pleno! Tienes madera de lingüista computacional.' : s >= 3 ? '¡Muy bien! Ya sabes más que la mayoría de los robots.' : 'Date otra vuelta por las mesas y vuelve a intentarlo.'}</p><div class="qnav"><button class="btn primary" id="qAgain">Repetir</button></div>`;
+    $('#qAgain').onclick = () => { qi = 0; results = []; setFace('neutral'); renderQ(); };
+    return;
+  }
+  const Q = QUIZ[qi];
+  box.innerHTML = `<div class="qprog">${prog}</div><p class="eyebrow">Pregunta ${qi + 1} de ${QUIZ.length}</p><p class="qq" style="margin-top:6px">${esc(Q.q)}</p><div class="opts">${Q.o.map((o, k) => `<button class="opt" data-k="${k}">${esc(o)}</button>`).join('')}</div><p class="qexp" id="qexp"></p><div class="qnav" id="qnav" hidden><button class="btn primary" id="qNext">${qi === QUIZ.length - 1 ? 'Ver resultado' : 'Siguiente'}</button></div>`;
+  $$('.opt', box).forEach(b => b.onclick = () => {
+    const k = +b.dataset.k, ok = k === Q.a; results[qi] = ok;
+    $$('.opt', box).forEach(x => { x.disabled = true; if (+x.dataset.k === Q.a) x.classList.add('right'); });
+    if (!ok) b.classList.add('wrong');
+    setFace(ok ? 'happy' : 'sad');
+    $('#qexp').textContent = (ok ? '¡Correcto! ' : 'Casi. ') + Q.e;
+    $('#qnav').hidden = false;
+    $('#qNext').onclick = () => { qi++; setFace('neutral'); renderQ(); };
+  });
+}
+renderQ();
+})();
+</script>
