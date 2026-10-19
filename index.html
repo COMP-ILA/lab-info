@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: póster del lab convertido en recorrido — portada con circuitos, 4 áreas, y tres "mesas de trabajo" interactivas + quiz */
+/* Layout: recorrido por el laboratorio con demostraciones interactivas */
 :root{
   --bg:#F3F5FB; --surface:#FFFFFF; --ink:#1B2363; --muted:#56608F;
   --accent:#3550E0; --accent-2:#5C7BFF; --sky:#DFE6FF; --line:#D6DCEF;
@@ -84,6 +84,37 @@ section.block{padding-block:64px;scroll-margin-top:60px}
 .area svg{width:52px;height:52px;color:var(--accent)}
 .area p{color:var(--muted);margin-top:6px;font-size:.98rem}
 .area .go{display:inline-block;margin-top:10px;font-family:var(--f-display);font-size:.85rem;color:var(--accent);font-weight:600}
+.equipment-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.equipment-card{position:relative;overflow:hidden;padding:22px;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 24px color-mix(in srgb,var(--ink) 6%,transparent)}
+.equipment-card::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--card-accent,var(--accent))}
+.equipment-card h3{font-size:1.05rem}
+.equipment-card .small{display:block;margin-top:3px;color:var(--muted);font-size:.78rem}
+.equipment-card.software{grid-column:1/-1;--card-accent:var(--accent)}
+.equipment-card.workstations{grid-column:span 4;--card-accent:var(--ok)}
+.equipment-card.capture{grid-column:span 4;--card-accent:var(--hl)}
+.equipment-card.teaching{grid-column:span 4;--card-accent:var(--accent-2)}
+.equip-heading{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.equip-icon{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:12px;background:color-mix(in srgb,var(--card-accent,var(--accent)) 12%,var(--surface));color:var(--card-accent,var(--accent))}
+.equip-icon svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.software-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.software-item{min-height:108px;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);text-decoration:none;color:var(--ink);transition:transform .18s,border-color .18s}
+.software-item:hover{transform:translateY(-3px);border-color:var(--accent)}
+.software-item:focus-visible{outline:3px solid var(--hl);outline-offset:3px}
+.software-item b{display:block;font-family:var(--f-display);font-size:.95rem;color:var(--accent)}
+.software-item span{display:block;margin-top:6px;font-size:.82rem;line-height:1.35;color:var(--muted)}
+.equipment-items{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.equipment-items li{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;line-height:1.4;color:var(--muted)}
+.equipment-items b{color:var(--ink)}
+.equip-dot{width:7px;height:7px;flex:none;margin-top:6px;border-radius:50%;background:var(--card-accent,var(--accent));box-shadow:0 0 0 4px color-mix(in srgb,var(--card-accent,var(--accent)) 14%,transparent)}
+.equip-stat{display:flex;align-items:baseline;gap:8px;margin:4px 0 14px}
+.equip-stat b{font-family:var(--f-display);font-size:3.4rem;line-height:1;color:var(--card-accent,var(--accent))}
+.equip-stat span{color:var(--muted);font-size:.9rem}
+.path-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.path-card{position:relative;padding:22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.path-card .path-num{font-family:var(--f-mono);font-size:.75rem;color:var(--accent);letter-spacing:.08em}
+.path-card h3{margin-top:8px}
+.path-card p{margin-top:7px;color:var(--muted);font-size:.94rem}
+.path-note{margin-top:16px;padding:16px 20px;border-left:4px solid var(--hl);border-radius:0 12px 12px 0;background:var(--hl-soft);color:var(--ink)}
 
 /* lab benches */
 .bench{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
@@ -105,6 +136,18 @@ textarea:focus,input[type="text"]:focus{outline:none;border-color:var(--accent)}
 .stat{background:var(--bg);border-radius:10px;padding:10px 12px}
 .stat b{display:block;font-family:var(--f-display);font-size:1.5rem;font-variant-numeric:tabular-nums}
 .stat span{font-size:.78rem;color:var(--muted)}
+.corpus-intro{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(240px,.8fr);gap:28px;align-items:end;margin-bottom:28px}
+.corpus-intro .sec-head{margin:0}
+.frequency-preview{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 8px 24px color-mix(in srgb,var(--ink) 5%,transparent)}
+.frequency-preview header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.frequency-preview header b{font-family:var(--f-display);font-size:.9rem}
+.frequency-preview header span{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.mini-bars{display:grid;gap:7px}
+.mini-bar{display:grid;grid-template-columns:5.5em minmax(0,1fr) 1.5em;gap:8px;align-items:center;font-family:var(--f-mono);font-size:.75rem}
+.mini-bar .word{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;color:var(--muted)}
+.mini-bar .track{height:8px;background:var(--bg);border-radius:99px;overflow:hidden}
+.mini-bar .fill{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .25s}
+.mini-bar .count{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
 .bars{display:grid;gap:6px}
 .bar{display:grid;grid-template-columns:7.5em minmax(0,1fr) 2.2em;gap:10px;align-items:center;font-family:var(--f-mono);font-size:.85rem}
@@ -169,7 +212,7 @@ mark.t{background:var(--hl-soft);color:var(--ink);border-bottom:2px solid var(--
 .chat-head{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
 .chat-head svg{width:40px;height:40px}
 .chat-head b{font-family:var(--f-display)}
-.chat-head small{display:block;color:var(--ok);font-size:.78rem}
+.chat-head small{display:block;color:var(--muted);font-size:.78rem}
 .msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
 .msg{max-width:85%;padding:10px 14px;border-radius:16px;font-size:.96rem;animation:fadein .3s both}
 .msg.bot{background:var(--sky);border-bottom-left-radius:4px;align-self:flex-start}
@@ -187,21 +230,6 @@ mark.t{background:var(--hl-soft);color:var(--ink);border-bottom:2px solid var(--
 .how ol b{color:var(--ink)}
 .side-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
 
-/* quiz */
-.quiz{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:28px}
-.quiz .robot{width:180px}
-.qprog{display:flex;gap:6px;margin-bottom:14px}.qprog i{flex:1;height:6px;border-radius:3px;background:var(--line)}
-.qprog i.ok{background:var(--ok)}.qprog i.ko{background:var(--bad)}.qprog i.cur{background:var(--accent)}
-.qq{font-family:var(--f-display);font-size:1.3rem;font-weight:600;margin-bottom:16px;text-wrap:balance}
-.opts{display:grid;gap:8px}
-.opt{text-align:left;font:inherit;padding:12px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
-.opt:hover:not(:disabled){border-color:var(--accent)}
-.opt.right{background:var(--ok-soft);border-color:var(--ok)}
-.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
-.opt:disabled{cursor:default}
-.qexp{margin-top:14px;color:var(--muted);min-height:1.5em}
-.qnav{margin-top:14px;display:flex;gap:8px}
-
 footer{border-top:1px solid var(--line);padding-block:32px;color:var(--muted);font-size:.9rem}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between}
 footer b{color:var(--ink);font-family:var(--f-display)}
@@ -210,13 +238,21 @@ footer b{color:var(--ink);font-family:var(--f-display)}
   .hero .wrap{grid-template-columns:1fr;padding-block:40px}
   .bot-wrap{order:-1}.robot{width:150px}
   .areas{grid-template-columns:1fr}
+  .corpus-intro{grid-template-columns:1fr;gap:0}
+  .equipment-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .equipment-card.software{grid-column:1/-1}
+  .equipment-card.workstations,.equipment-card.capture,.equipment-card.teaching{grid-column:span 1}
+  .software-list{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .path-grid{grid-template-columns:1fr}
   .bench-body{grid-template-columns:1fr}
   .pane+.pane{border-left:0;border-top:1px solid var(--line)}
   .chat-grid{grid-template-columns:1fr}
-  .quiz{grid-template-columns:1fr;padding:20px}.quiz .robot{width:110px;justify-self:center}
   nav.top .brand{display:none}nav.top .links{margin-left:0}
 }
 @media (max-width:480px){
+  .equipment-grid{grid-template-columns:1fr}
+  .equipment-card.software,.equipment-card.workstations,.equipment-card.capture,.equipment-card.teaching{grid-column:1}
+  .software-list{grid-template-columns:repeat(2,minmax(0,1fr))}
   .ficha dl{grid-template-columns:1fr}.ficha dd{border-top:0;padding-top:0}
   .bar{grid-template-columns:6em minmax(0,1fr) 2em}
 }
@@ -231,7 +267,8 @@ footer b{color:var(--ink);font-family:var(--f-display)}
       <a href="#corpus">Corpus</a>
       <a href="#flujo">Automatización</a>
       <a href="#chatbot">Chatbot</a>
-      <a href="#quiz">Quiz</a>
+      <a href="#equipamiento">Equipamiento</a>
+      <a href="#formacion">Formación</a>
     </div>
   </div>
 </nav>
@@ -295,9 +332,9 @@ footer b{color:var(--ink);font-family:var(--f-display)}
         <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M26 12c-5-4-13-5-20-4v30c7-1 15 0 20 4 5-4 13-5 20-4V8c-7-1-15 0-20 4z"/><path d="M26 12v30"/><path d="M11 16h9M11 22h9M11 28h9M32 16h9M32 22h9M32 28h9"/></svg>
         <div><h3>Diseño y procesamiento de corpus</h3><p>Análisis, compilación y limpieza automatizada de grandes volúmenes de datos lingüísticos y experimentales para aplicaciones prácticas.</p><span class="go">Analiza un texto →</span></div>
       </a>
-      <a class="area" href="#ficha">
+      <a class="area" href="#equipamiento">
         <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="42" height="28" rx="3"/><path d="M20 44h12M26 36v8"/><path d="M12 29l8-9 7 5 9-11"/><circle cx="12" cy="29" r="2"/><circle cx="20" cy="20" r="2"/><circle cx="27" cy="25" r="2"/><circle cx="36" cy="14" r="2"/></svg>
-        <div><h3>Creación de recursos digitales</h3><p>Herramientas, diccionarios electrónicos y bases de datos con soporte digital para la investigación académica y la transferencia tecnológica.</p><span class="go">Mira una ficha terminológica →</span></div>
+        <div><h3>Creación de recursos digitales</h3><p>Herramientas y recursos digitales para la investigación académica y la transferencia tecnológica.</p><span class="go">Explora el equipamiento →</span></div>
       </a>
     </div>
   </div>
@@ -305,10 +342,16 @@ footer b{color:var(--ink);font-family:var(--f-display)}
 
 <section class="block" id="corpus" style="padding-top:16px">
   <div class="wrap">
-    <div class="sec-head">
-      <p class="eyebrow">Mesa 1 · Corpus y terminología</p>
-      <h2>Mete un texto y míralo como lo ve un ordenador</h2>
-      <p class="lead">Un corpus es una colección de textos reales que se estudia con herramientas informáticas. Elige un ejemplo o pega el tuyo: los resultados cambian mientras escribes.</p>
+    <div class="corpus-intro">
+      <div class="sec-head">
+        <p class="eyebrow">Corpus y terminología</p>
+        <h2>Analiza un texto con herramientas de corpus</h2>
+        <p class="lead">Un corpus es una colección de textos reales que se estudia con herramientas informáticas. Elige un ejemplo o pega el tuyo: los resultados cambian mientras escribes.</p>
+      </div>
+      <aside class="frequency-preview" aria-label="Gráfico de frecuencias del texto actual">
+        <header><b>Palabras más frecuentes</b><span>vista rápida</span></header>
+        <div class="mini-bars" id="miniBars" aria-live="polite"></div>
+      </aside>
     </div>
     <div class="bench">
       <div class="bench-bar">
@@ -358,9 +401,9 @@ footer b{color:var(--ink);font-family:var(--f-display)}
 <section class="block" id="flujo" style="padding-top:16px">
   <div class="wrap">
     <div class="sec-head">
-      <p class="eyebrow">Mesa 2 · Automatización terminográfica</p>
-      <h2>De un texto sucio a una ficha de diccionario</h2>
-      <p class="lead">Crear una ficha terminológica a mano lleva su tiempo. Encadenando pasos automáticos, el ordenador hace el trabajo repetitivo y la persona experta revisa el resultado.</p>
+      <p class="eyebrow">Automatización terminográfica</p>
+      <h2>Asistencia al trabajo terminográfico</h2>
+      <p class="lead">El ordenador ayuda a localizar candidatos a término y aporta datos para revisarlos: frecuencias, concordancias y contexto. La persona especialista interpreta y valida los resultados.</p>
     </div>
     <div class="bench">
       <div class="bench-bar">
@@ -377,7 +420,6 @@ footer b{color:var(--ink);font-family:var(--f-display)}
           <li class="step" data-step="1"><span class="num">2</span><div><h3>Tokenización</h3><p class="desc">Cortar el texto en unidades: palabras y signos.</p><div class="out wait">esperando…</div></div></li>
           <li class="step" data-step="2"><span class="num">3</span><div><h3>Etiquetado morfosintáctico</h3><p class="desc">Asignar a cada token su categoría gramatical y su lema (la forma de diccionario).</p><div class="out wait">esperando…</div></div></li>
           <li class="step" data-step="3"><span class="num">4</span><div><h3>Extracción de candidatos a término</h3><p class="desc">Buscar patrones típicos de los términos: sustantivo + adjetivo, sustantivo + de + sustantivo…</p><div class="out wait">esperando…</div></div></li>
-          <li class="step" data-step="4" id="ficha"><span class="num">5</span><div><h3>Ficha terminológica</h3><p class="desc">Un modelo de lenguaje propone definición y equivalentes; la terminóloga valida.</p><div class="out wait">esperando…</div></div></li>
         </ol>
       </div>
     </div>
@@ -387,31 +429,30 @@ footer b{color:var(--ink);font-family:var(--f-display)}
 <section class="block" id="chatbot" style="padding-top:16px">
   <div class="wrap">
     <div class="sec-head">
-      <p class="eyebrow">Mesa 3 · Chatbots</p>
-      <h2>Habla con Lingüi</h2>
-      <p class="lead">Lingüi es un chatbot de reglas, como los primeros que se programaron. Pregúntale por el laboratorio y fíjate en la línea gris: te enseña qué ha entendido.</p>
+      <p class="eyebrow">Chatbots</p>
+      <h2>Habla con Botseriu</h2>
+      <p class="lead">Esta página muestra una demo simplificada de Botseriu para ilustrar cómo responde. El Botseriu real está basado en AIML y alojado en Pandorabots.</p>
     </div>
     <div class="chat-grid">
       <div class="chat">
         <div class="chat-head">
           <svg viewBox="38 60 124 124" aria-hidden="true"><circle cx="100" cy="68" r="7" fill="var(--hl)"/><line x1="100" y1="72" x2="100" y2="90" stroke="var(--ink)" stroke-width="4"/><rect x="38" y="90" width="124" height="88" rx="30" fill="var(--sky)" stroke="var(--accent)" stroke-width="5"/><rect x="54" y="104" width="92" height="58" rx="20" fill="var(--screen)"/><g fill="none" stroke="var(--eye)" stroke-width="7" stroke-linecap="round"><path d="M70 136 q10 -14 20 0"/><path d="M110 136 q10 -14 20 0"/></g></svg>
-          <div><b>Lingüi</b><small>● en línea</small></div>
+          <div><b>Botseriu</b><small>demo simplificada</small></div>
           <label class="check" style="margin:0 0 0 auto;font-size:.8rem"><input type="checkbox" id="whyToggle" checked> Ver cómo pienso</label>
         </div>
         <div class="msgs" id="msgs" aria-live="polite"></div>
         <div class="sugs" id="sugs"></div>
         <form id="chatForm">
-          <input type="text" id="chatInput" placeholder="Escribe tu pregunta…" autocomplete="off" aria-label="Mensaje para Lingüi">
+          <input type="text" id="chatInput" placeholder="Escribe tu pregunta…" autocomplete="off" aria-label="Mensaje para Botseriu">
           <button class="btn primary" type="submit">Enviar</button>
         </form>
       </div>
       <div class="how">
         <div class="side-card">
-          <h3>Cómo funciona por dentro</h3>
+          <h3>Sobre Botseriu</h3>
           <ol style="margin-top:10px">
-            <li><b>Normaliza</b> tu mensaje: minúsculas y sin tildes.</li>
-            <li><b>Busca palabras clave</b> en una lista («corpus», «estudiar», «dónde»…).</li>
-            <li><b>Elige la intención</b> que más encaja y devuelve una respuesta escrita de antemano.</li>
+            <li>El bot real está basado en <b>AIML</b> y alojado en <b>Pandorabots</b>.</li>
+            <li>El chat de esta página es una <b>demo simplificada</b>: no se conecta al bot real.</li>
           </ol>
         </div>
         <div class="side-card">
@@ -423,30 +464,60 @@ footer b{color:var(--ink);font-family:var(--f-display)}
   </div>
 </section>
 
-<section class="block" id="quiz" style="padding-top:16px">
+<section class="block" id="equipamiento" style="padding-top:16px">
   <div class="wrap">
     <div class="sec-head">
-      <p class="eyebrow">Antes de irte</p>
-      <h2>¿Cuánto has aprendido?</h2>
+      <p class="eyebrow">Espacios y recursos</p>
+      <h2>Equipamiento del laboratorio</h2>
+      <p class="lead">Herramientas para analizar, documentar y compartir datos lingüísticos.</p>
     </div>
-    <div class="quiz">
-      <svg class="robot" id="quizBot" viewBox="20 56 160 176" aria-hidden="true">
-        <g class="head">
-          <line x1="100" y1="72" x2="100" y2="90" stroke="var(--ink)" stroke-width="4"/>
-          <circle cx="100" cy="68" r="7" fill="var(--hl)"/>
-          <rect x="28" y="116" width="16" height="34" rx="6" fill="var(--accent)"/>
-          <rect x="156" y="116" width="16" height="34" rx="6" fill="var(--accent)"/>
-          <rect x="38" y="90" width="124" height="88" rx="30" fill="var(--sky)" stroke="var(--accent)" stroke-width="4"/>
-          <rect x="54" y="104" width="92" height="58" rx="20" fill="var(--screen)"/>
-          <g class="eyes" id="quizEyes" fill="none" stroke="var(--eye)" stroke-width="6" stroke-linecap="round"><path d="M70 136 q10 -14 20 0"/><path d="M110 136 q10 -14 20 0"/></g>
-          <path id="quizMouth" d="M92 150 q8 6 16 0" stroke="var(--eye)" stroke-width="3" fill="none" stroke-linecap="round"/>
-        </g>
-        <rect x="62" y="186" width="76" height="40" rx="14" fill="var(--accent)"/>
-      </svg>
-      <div id="quizBox" style="min-width:0"></div>
+    <div class="equipment-grid">
+      <article class="equipment-card software">
+        <div class="equip-heading">
+          <span class="equip-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9h4M7 12h8"/></svg></span>
+          <div><h3>Software de análisis</h3><span class="small">Cinco herramientas especializadas</span></div>
+        </div>
+        <div class="software-list">
+          <a class="software-item" href="https://praat.org/praat" target="_blank" rel="noopener noreferrer"><b>Praat ↗</b><span>Fonética y espectrogramas</span></a>
+          <a class="software-item" href="https://www.philocomp.net/humanities/signature.htm" target="_blank" rel="noopener noreferrer"><b>Signature ↗</b><span>Medidas y visualización estilométrica</span></a>
+          <a class="software-item" href="https://github.com/computationalstylistics/stylo" target="_blank" rel="noopener noreferrer"><b>Stylo ↗</b><span>Estilometría y clasificación en R</span></a>
+          <a class="software-item" href="https://www.corpustool.com/" target="_blank" rel="noopener noreferrer"><b>UAM CorpusTool ↗</b><span>Anotación de corpus textuales</span></a>
+          <a class="software-item" href="https://www.compilatio.net/es/" target="_blank" rel="noopener noreferrer"><b>Compilatio ↗</b><span>Análisis de similitud documental</span></a>
+        </div>
+      </article>
+      <article class="equipment-card workstations">
+        <div class="equip-heading"><span class="equip-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 8h4M7 11h8"/></svg></span><h3>Aula conectada</h3></div>
+        <div class="equip-stat"><b>20</b><span>puestos de trabajo en red</span></div>
+        <ul class="equipment-items"><li><i class="equip-dot"></i><span>Equipos Intel i5 con gráficas NVIDIA y pantallas táctiles LG de 19″.</span></li><li><i class="equip-dot"></i><span><b>Servidor local</b> para recursos, bases de datos, docencia y control del aula.</span></li></ul>
+      </article>
+      <article class="equipment-card capture">
+        <div class="equip-heading"><span class="equip-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h16v12H4zM7 8l2-4h6l2 4"/><circle cx="12" cy="14" r="3"/><path d="M4 5h3"/></svg></span><h3>Captura y digitalización</h3></div>
+        <ul class="equipment-items"><li><i class="equip-dot"></i><span><b>Zeutschel OS 12002</b><br>Escáner cenital A2+, 600 ppp.</span></li><li><i class="equip-dot"></i><span><b>25 microcascos Roycan</b><br>Escucha, transcripción y análisis de audio.</span></li><li><i class="equip-dot"></i><span><b>Grabadora de sonido</b><br>Registro de habla y materiales.</span></li></ul>
+      </article>
+      <article class="equipment-card teaching">
+        <div class="equip-heading"><span class="equip-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="13" rx="2"/><path d="M8 21h8M12 16v5M7 8h10M7 11h6"/></svg></span><h3>Docencia y multimedia</h3></div>
+        <ul class="equipment-items"><li><i class="equip-dot"></i><span><b>StarBoard FX-89WE1</b><br>Pizarra táctil interactiva.</span></li><li><i class="equip-dot"></i><span><b>Vivitek D755WT</b><br>Proyector de ultra corta distancia.</span></li><li><i class="equip-dot"></i><span><b>Blu-ray LG</b><br>Reproducción audiovisual.</span></li></ul>
+      </article>
     </div>
   </div>
 </section>
+
+<section class="block" id="formacion" style="padding-top:16px">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Formación y salidas</p>
+      <h2>¿Qué necesito para dedicarme a las tecnologías del lenguaje?</h2>
+      <p class="lead">No hay un único camino: el campo combina conocimientos de lengua con herramientas informáticas.</p>
+    </div>
+    <div class="path-grid">
+      <article class="path-card"><span class="path-num">01 · LENGUA</span><h3>Entender cómo funciona el lenguaje</h3><p>Lingüística, idiomas, gramática y análisis de textos o habla ayudan a plantear buenas preguntas y entender los datos.</p></article>
+      <article class="path-card"><span class="path-num">02 · TECNOLOGÍA</span><h3>Aprender a trabajar con datos</h3><p>Programación, estadística y herramientas para procesar corpus permiten convertir esas preguntas en análisis y aplicaciones.</p></article>
+      <article class="path-card"><span class="path-num">03 · PRÁCTICA</span><h3>Probar, evaluar y colaborar</h3><p>Los proyectos se construyen en equipo: se prueban con datos reales y se revisa si los resultados son útiles y fiables.</p></article>
+    </div>
+    <p class="path-note"><b>Puedes llegar desde distintos estudios.</b> Desde lingüística, filología o traducción puedes sumar programación y análisis de datos; desde informática, puedes especializarte en lengua y comunicación.</p>
+  </div>
+</section>
+
 </main>
 
 <footer>
@@ -547,6 +618,8 @@ function analyze(){
   const top = [...counts].filter(([w]) => !hide || !STOP.has(w)).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'es')).slice(0, 12);
   const max = top.length ? top[0][1] : 1;
   $('#bars').innerHTML = top.length ? top.map(([w, n]) => `<div class="bar"><span class="w" title="${esc(w)}">${esc(w)}</span><span class="track"><span class="fill" style="width:${(n / max * 100).toFixed(1)}%"></span></span><span class="n">${n}</span></div>`).join('') : '<p class="empty">Escribe algo en el cuadro de la izquierda.</p>';
+  const preview = top.slice(0, 4);
+  $('#miniBars').innerHTML = preview.length ? preview.map(([w, n]) => `<div class="mini-bar"><span class="word" title="${esc(w)}">${esc(w)}</span><span class="track"><span class="fill" style="width:${(n / max * 100).toFixed(1)}%"></span></span><span class="count">${n}</span></div>`).join('') : '<span class="small">Escribe un texto para ver sus frecuencias.</span>';
   kwic(text, toks); terms(text, toks);
 }
 function kwic(text, toks){
@@ -627,19 +700,20 @@ const STEPS = [
     }));
     // drop a match that is a prefix of a longer match at the same start
     const keep = found.filter(f => !found.some(g => g !== f && g.i === f.i && g.p.length > f.p.length));
-    return `<div class="fade"><div class="termlist" style="margin-top:0">${keep.map((f, k) => `<span class="chip"${k === 0 ? ' style="border-width:2px;border-color:var(--hl)"' : ''}>${esc(f.text)}<small>${f.p.map(t => PNAME[t]).join(' + ')}</small></span>`).join('')}</div><p class="note">${keep.length} candidatos. Elegimos «${esc(keep[0].text)}» para la ficha.</p></div>`;
+    const evidence = keep.map(f => {
+      const needle = f.text.toLowerCase();
+      const escaped = needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const matches = [...cleaned.matchAll(new RegExp(`\\b${escaped}\\b`, 'gi'))];
+      const frequency = matches.length;
+      const hit = matches[0];
+      const left = hit ? cleaned.slice(Math.max(0, hit.index - 38), hit.index) : '';
+      const matched = hit ? cleaned.slice(hit.index, hit.index + needle.length) : f.text;
+      const right = hit ? cleaned.slice(hit.index + needle.length, hit.index + needle.length + 38) : '';
+      return `<li><b>${f.p.map(t => PNAME[t]).join(' + ')}</b><span class="small">${frequency} ${frequency === 1 ? 'aparición' : 'apariciones'}</span><p class="note">…${esc(left)}<mark class="t">${esc(matched)}</mark>${esc(right)}…</p></li>`;
+    }).join('');
+    return `<div class="fade"><p class="small">Candidatos, frecuencia y concordancia de ejemplo para orientar la revisión:</p><ul class="steps" style="margin-top:12px">${evidence}</ul><p class="note">${keep.length} candidatos detectados. Las frecuencias y los contextos ayudan a valorar su relevancia.</p></div>`;
   },
-  () => `<div class="fade ficha">
-      <header><small>Ficha terminológica · Energías renovables</small><div>energía eólica marina</div></header>
-      <dl>
-        <dt>Categoría</dt><dd>sintagma nominal, femenino</dd>
-        <dt>Definición</dt><dd>Energía obtenida del viento mediante aerogeneradores instalados en el mar, fijos o flotantes.</dd>
-        <dt>Equivalentes</dt><dd><span class="lang">EN</span>offshore wind energy<br><span class="lang">FR</span>énergie éolienne en mer<br><span class="lang">DE</span>Offshore-Windenergie</dd>
-        <dt>Variantes</dt><dd>eólica marina · energía eólica offshore</dd>
-        <dt>Contexto</dt><dd><i>«La <b>energía eólica marina</b> es una fuente de energía renovable que aprovecha la fuerza del viento en alta mar.»</i></dd>
-        <dt>Estado</dt><dd><span class="chip" style="background:var(--ok-soft);border-color:var(--ok);color:var(--ok)">pendiente de validación humana</span></dd>
-      </dl>
-    </div>`
+
 ];
 let stepIdx = 0, running = false;
 function doStep(){
@@ -669,16 +743,16 @@ $('#resetFlow').onclick = resetFlow;
 /* ---------- chatbot ---------- */
 const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 const INTENTS = [
-  {id:'SALUDO', kw:['hola','buenas','hey','saludos','que tal'], r:['¡Hola! Soy Lingüi, el bot del Laboratorio de Lingüística Computacional y Digital. Pregúntame qué hacemos, qué es un corpus o qué se puede estudiar.']},
+  {id:'SALUDO', kw:['hola','buenas','hey','saludos','que tal'], r:['¡Hola! Soy Botseriu, el chatbot del Laboratorio de Lingüística Computacional y Digital. Pregúntame qué hacemos, qué es un corpus o qué se puede estudiar.']},
   {id:'ADIOS', kw:['adios','chao','hasta luego','me voy','nos vemos'], r:['¡Hasta pronto! Si te ha gustado, pásate por el ILA de la UCA.']},
   {id:'GRACIAS', kw:['gracias','genial','guay','que bien','mola'], r:['¡De nada! Me han programado para ser amable, pero me alegro igual.']},
-  {id:'BOT', kw:['quien eres','como funcionas','eres un','eres una','que eres','como piensas','bot','robot'], r:['Soy un bot de reglas: busco palabras clave en tu mensaje y elijo una respuesta escrita de antemano. Si escribes algo que no está en mi lista, me pierdo. Prueba a hacerme una pregunta rara y verás.']},
+  {id:'BOT', kw:['quien eres','como funcionas','eres un','eres una','que eres','como piensas','bot','robot'], r:['Estoy basado en AIML: comparo tu mensaje con patrones y respondo según reglas escritas de antemano. Si no encuentro un patrón adecuado, me pierdo. Prueba a hacerme una pregunta rara y verás.']},
   {id:'IA', kw:['inteligencia artificial','chatgpt','gpt','claude','modelo de lenguaje','modelos de lenguaje','llm',' ia ','gemini'], r:['Los modelos de lenguaje generan texto palabra a palabra tras entrenarse con corpus gigantescos. En el laboratorio los combinamos con conocimiento lingüístico (técnicas híbridas), por ejemplo para automatizar la terminografía.']},
-  {id:'CORPUS', kw:['corpus','corpora','textos','datos','frecuencia','concordancia'], r:['Un corpus es una colección de textos reales, escritos u orales, organizada para estudiarla con ordenador. Diseñamos, compilamos y limpiamos corpus de forma automatizada. Puedes probarlo en la Mesa 1 de esta página.']},
+  {id:'CORPUS', kw:['corpus','corpora','textos','datos','frecuencia','concordancia'], r:['Un corpus es una colección de textos reales, escritos u orales, organizada para estudiarla con ordenador. Diseñamos, compilamos y limpiamos corpus de forma automatizada. Puedes probar el analizador de corpus en esta página.']},
   {id:'TERMINOLOGIA', kw:['termin','diccionario','glosario','traduc','ficha','especializad'], r:['Los términos son las palabras de un ámbito especializado: «parque eólico», «fondo marino»… La terminología computacional los detecta y organiza con ayuda del ordenador para crear diccionarios electrónicos y bases de datos.']},
-  {id:'AUTOMATIZACION', kw:['automati','flujo','proceso','pipeline'], r:['Encadenamos pasos automáticos (limpieza, tokenización, etiquetado, extracción) para que el trabajo repetitivo lo haga la máquina y la persona experta revise. Míralo en marcha en la Mesa 2.']},
+  {id:'AUTOMATIZACION', kw:['automati','flujo','proceso','pipeline'], r:['Encadenamos pasos automáticos (limpieza, tokenización, etiquetado, extracción) para que el trabajo repetitivo lo haga la máquina y la persona experta revise. Mira la demostración de automatización en esta página.']},
   {id:'LAB', kw:['que haceis','que hacen','que hace','laboratorio','lab','investiga','lineas'], r:['Investigamos, enseñamos y desarrollamos herramientas en la intersección entre lingüística e informática. Trabajamos en cuatro líneas: ingeniería lingüística, corpus, automatización de flujos y recursos digitales.']},
-  {id:'ESTUDIOS', kw:['estudiar','carrera','trabajo','trabajar','salida','empleo','futuro','aprender','grado','master','profesion'], r:['La lingüística computacional tiene muchas salidas: empresas de tecnología del lenguaje, traducción y localización, asistentes virtuales, lexicografía digital o investigación. Se llega desde las filologías, la lingüística o la traducción, aprendiendo algo de programación por el camino.']},
+  {id:'ESTUDIOS', kw:['estudiar','carrera','trabajo','trabajar','salida','empleo','futuro','aprender','grado','master','profesion'], r:['No hay un único camino: puedes partir de lingüística, filología o traducción y aprender programación y análisis de datos, o venir de informática y especializarte en lengua. Más abajo tienes una sección con habilidades y vías de entrada.']},
   {id:'VISITA', kw:['donde','visita','jornada','hora','cuando','ubicacion'], r:['Estamos en el Instituto de Investigación en Lingüística Aplicada (ILA) de la UCA. Hoy, 20 de octubre, la visita a gabinetes y laboratorios es de 13:30 a 14:30.']},
   {id:'CADIZ', kw:['cadiz','gaditan','carnaval','chirigota','pisha','quillo'], r:['¡Quillo! El habla gaditana también es un corpus estupendo: aspiraciones, eses que desaparecen y un vocabulario propio. Con las herramientas adecuadas se puede estudiar con datos.']},
 ];
@@ -707,40 +781,9 @@ $('#sugs').innerHTML = SUGS.map(s => `<button class="btn" type="button">${esc(s)
 $$('#sugs button').forEach(b => b.onclick = () => ask(b.textContent));
 $('#chatForm').addEventListener('submit', e => { e.preventDefault(); const i = $('#chatInput'); ask(i.value); i.value = ''; });
 $('#whyToggle').onchange = e => $$('.msg .why').forEach(s => s.hidden = !e.target.checked);
-addMsg('bot', '¡Hola! Soy Lingüi. Pregúntame lo que quieras sobre el laboratorio, o pulsa una de las sugerencias.', 'intención: BIENVENIDA · mensaje inicial programado');
+addMsg('bot', '¡Hola! Soy la demo simplificada de Botseriu. Pregúntame por el laboratorio o pulsa una sugerencia.', 'intención: BIENVENIDA · mensaje inicial programado');
 
-/* ---------- quiz ---------- */
-const QUIZ = [
-  {q:'¿Qué es un corpus?', o:['Una colección de textos reales organizada para estudiarla','Un programa que traduce automáticamente','El conjunto de reglas gramaticales de una lengua'], a:0, e:'Un corpus reúne textos o grabaciones reales para analizar cómo se usa de verdad la lengua.'},
-  {q:'¿Cuántos tokens tiene «El gato come pescado.» si contamos el punto?', o:['4','5','3'], a:1, e:'Cuatro palabras más el signo de puntuación: 5 tokens.'},
-  {q:'¿Cuál de estas expresiones es un término especializado?', o:['«una tarde preciosa»','«muchas gracias»','«parque eólico marino»'], a:2, e:'«Parque eólico marino» designa un concepto concreto del ámbito de las energías renovables.'},
-  {q:'ELIZA, uno de los primeros chatbots, se creó en…', o:['1966','1995','2022'], a:0, e:'Joseph Weizenbaum la programó en el MIT en 1966. Funcionaba con reglas, como Lingüi.'},
-  {q:'Si un texto tiene una riqueza léxica (TTR) muy alta, significa que…', o:['Repite mucho las mismas palabras','Usa un vocabulario muy variado','Tiene muchas faltas de ortografía'], a:1, e:'TTR = palabras distintas ÷ palabras totales. Cuanto más alto, más variado es el vocabulario.'},
-];
-let qi = 0, results = [];
-const mouth = {happy:'M88 148 q12 12 24 0', sad:'M90 154 q10 -8 20 0', neutral:'M92 150 q8 6 16 0'};
-const setFace = f => $('#quizMouth').setAttribute('d', mouth[f]);
-function renderQ(){
-  const box = $('#quizBox'), prog = QUIZ.map((_, k) => `<i class="${results[k] === true ? 'ok' : results[k] === false ? 'ko' : k === qi ? 'cur' : ''}"></i>`).join('');
-  if (qi >= QUIZ.length){
-    const s = results.filter(Boolean).length;
-    setFace(s >= 3 ? 'happy' : 'sad');
-    box.innerHTML = `<div class="qprog">${prog}</div><p class="qq">${s} de ${QUIZ.length} aciertos</p><p class="qexp">${s === 5 ? '¡Pleno! Tienes madera de lingüista computacional.' : s >= 3 ? '¡Muy bien! Ya sabes más que la mayoría de los robots.' : 'Date otra vuelta por las mesas y vuelve a intentarlo.'}</p><div class="qnav"><button class="btn primary" id="qAgain">Repetir</button></div>`;
-    $('#qAgain').onclick = () => { qi = 0; results = []; setFace('neutral'); renderQ(); };
-    return;
-  }
-  const Q = QUIZ[qi];
-  box.innerHTML = `<div class="qprog">${prog}</div><p class="eyebrow">Pregunta ${qi + 1} de ${QUIZ.length}</p><p class="qq" style="margin-top:6px">${esc(Q.q)}</p><div class="opts">${Q.o.map((o, k) => `<button class="opt" data-k="${k}">${esc(o)}</button>`).join('')}</div><p class="qexp" id="qexp"></p><div class="qnav" id="qnav" hidden><button class="btn primary" id="qNext">${qi === QUIZ.length - 1 ? 'Ver resultado' : 'Siguiente'}</button></div>`;
-  $$('.opt', box).forEach(b => b.onclick = () => {
-    const k = +b.dataset.k, ok = k === Q.a; results[qi] = ok;
-    $$('.opt', box).forEach(x => { x.disabled = true; if (+x.dataset.k === Q.a) x.classList.add('right'); });
-    if (!ok) b.classList.add('wrong');
-    setFace(ok ? 'happy' : 'sad');
-    $('#qexp').textContent = (ok ? '¡Correcto! ' : 'Casi. ') + Q.e;
-    $('#qnav').hidden = false;
-    $('#qNext').onclick = () => { qi++; setFace('neutral'); renderQ(); };
-  });
-}
-renderQ();
 })();
 </script>
+</body>
+</html>
